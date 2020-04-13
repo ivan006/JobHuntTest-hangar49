@@ -9,3 +9,9 @@ https://www.youtube.com/watch?v=o3uvmScCGVs
 https://datatables.yajrabox.com/starter
 <!-- https://stackoverflow.com/questions/32573924/composer-hanging-while-updating-dependencies
 https://stackoverflow.com/questions/53076604/laravel-5-7-laravel-datatable-is-not-installing-with-composer -->
+
+# api consumer
+google: consume an api with php
+https://support.liveagent.com/061754-How-to-make-REST-calls-in-PHP
+https://www.twilio.com/blog/building-and-consuming-a-restful-api-in-laravel-php
+google: curl

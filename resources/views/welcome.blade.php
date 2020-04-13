@@ -62,8 +62,17 @@
                 margin-bottom: 30px;
             }
         </style>
+        <script src="{{ asset('/js/app.js') }}"></script>
+        <script type="text/javascript">
+        $(document).ready( function () {
+          $('#table_id').DataTable();
+        } );
+        </script>
     </head>
     <body>
+      <table id="table_id">
+
+      </table>
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
