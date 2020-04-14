@@ -15,3 +15,7 @@ google: consume an api with php
 https://support.liveagent.com/061754-How-to-make-REST-calls-in-PHP
 https://www.twilio.com/blog/building-and-consuming-a-restful-api-in-laravel-php
 google: curl
+google: Laravel Mix Error Can't resolve datatables.net in resources\js
+https://datatables.net/manual/installation
+Dev Skills - Laravel - Installing JS/PHP libraries https://docs.google.com/document/d/1xUdyfGUXkvfFbpJWJhadzJ3A0ZQ6TTFITinFUiiwrtM/edit#
+https://stackoverflow.com/questions/50280975/jquery-not-working-in-angular-6-error-enoent-no-such-file-or-directory-open
