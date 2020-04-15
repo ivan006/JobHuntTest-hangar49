@@ -1,3 +1,5 @@
 require('./bootstrap');
-var $  = require( 'jquery' );
-var dt = require( 'datatables.net' )();
+// var $  = require( 'jquery' );
+// var dt = require( 'datatables.net' )();
+import $ from 'jquery';
+import 'datatables.net';

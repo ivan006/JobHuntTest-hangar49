@@ -19,3 +19,10 @@ google: Laravel Mix Error Can't resolve datatables.net in resources\js
 https://datatables.net/manual/installation
 Dev Skills - Laravel - Installing JS/PHP libraries https://docs.google.com/document/d/1xUdyfGUXkvfFbpJWJhadzJ3A0ZQ6TTFITinFUiiwrtM/edit#
 https://stackoverflow.com/questions/50280975/jquery-not-working-in-angular-6-error-enoent-no-such-file-or-directory-open
+https://stackoverflow.com/questions/18875674/whats-the-difference-between-dependencies-devdependencies-and-peerdependencies
+google: canot find module @babal/parser lravel
+https://stackoverflow.com/questions/45034581/laravel-5-4-cross-env-is-not-recognized-as-an-internal-or-external-command
+google: TypeError: "this is undefined" DataTable app.js stackoverflow
+https://www.youtube.com/watch?v=Bt9JumZQdPI
+google: add dattables style to larave mix
+https://datatables.net/forums/discussion/53044/datatables-net-editor-bs4-webpack-installation-issues
