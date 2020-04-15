@@ -14,7 +14,8 @@ class customer_c extends Controller
      */
     public function index()
     {
-        //
+      $ExampleParameter = 0;
+      return view('customers', compact('ExampleParameter'));
     }
 
     /**
