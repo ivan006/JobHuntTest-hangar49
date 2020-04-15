@@ -16,8 +16,27 @@ class CreateCustomersTable extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('field1');
-            $table->string('field2');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('email');
+            $table->string('job_title_full');
+            $table->string('job_title');
+            $table->string('city');
+            $table->string('country');
+            $table->string('linkedin');
+            $table->string('company');
+            $table->string('company_website');
+            $table->string('company_industry');
+            $table->string('company_founded');
+            $table->string('company_size');
+            $table->string('company_linkedin');
+            $table->string('company_headquarters');
+            $table->string('email_reliability_status');
+            $table->string('receiving_email_server');
+            $table->string('kind');
+            $table->string('tag');
+            $table->string('month');
+
         });
     }
 

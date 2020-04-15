@@ -16,4 +16,5 @@ use Illuminate\Support\Facades\Route;
 Route::get('/welcome', function () {
     return view('welcome');
 });
- Route::get('/', 'customer_c@index');
+Route::get('/', 'customer_c@index');
+Route::get('/SyncGoogleSheetsToLocalDB', 'customer_c@SyncGoogleSheetsToLocalDB');
