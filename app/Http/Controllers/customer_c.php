@@ -15,10 +15,44 @@ class customer_c extends Controller
      */
     public function index()
     {
+      if (1==1) {
+        $hubspot = \SevenShores\Hubspot\Factory::create('c1eead18-5a35-4ada-b52f-dc6e1a084e5a');
+        
+        // $contact = $hubspot->contacts()->getByEmail("bh@hubspot.com");
+        // echo $contact->properties->email->value;
+
+        // Get an array of 10 contacts
+        // getting only the firstname and lastname properties
+        // and set the offset to 123456
+        $response = $hubspot->contacts()->all([
+          'count'     => 10,
+          'property'  => ['firstname', 'lastname'],
+          'vidOffset' => 0,
+        ]);
+
+        ob_start();
+
+        foreach ($response->contacts as $contact) {
+          echo sprintf(
+            "Contact name is %s %s." . PHP_EOL,
+            $contact->properties->firstname->value,
+            $contact->properties->lastname->value
+          );
+        }
+
+        // Info for pagination
+        echo $response->{'has-more'};
+        echo $response->{'vid-offset'};
+
+        $hubspot_data = ob_get_contents();
+
+        ob_end_clean();
+        // code...
+      }
 
 
       $customers = customer::all();
-      return view('customers', compact('customers'));
+      return view('customers', compact('customers','hubspot_data'));
     }
 
     /**

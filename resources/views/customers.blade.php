@@ -33,11 +33,14 @@
         <hr>
         <table id="example" class="display  table table-striped">
         </table>
-        <!-- <div class="">
+        <div class="">
           <pre>
-            <?php echo json_encode($customers,JSON_PRETTY_PRINT); ?>
+            <?php
+            // echo json_encode($customers,JSON_PRETTY_PRINT);
+            echo $hubspot_data; 
+            ?>
           </pre>
-        </div> -->
+        </div>
       </div>
 
       <script src="{{ asset('/js/app.js') }}"></script>

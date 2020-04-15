@@ -21,7 +21,7 @@ https://www.youtube.com/watch?v=Bt9JumZQdPI
 google: add dattables style to larave mix
 https://datatables.net/forums/discussion/53044/datatables-net-editor-bs4-webpack-installation-issues
 
-# api consumer
+# sheets consumer
 google: consume an api with php
 https://support.liveagent.com/061754-How-to-make-REST-calls-in-PHP
 https://www.twilio.com/blog/building-and-consuming-a-restful-api-in-laravel-php
@@ -31,3 +31,20 @@ https://github.com/googleapis/google-api-php-client
 https://stackoverflow.com/questions/56391240/laravel-class-google-client-not-found
 https://www.itsolutionstuff.com/post/how-can-i-get-the-path-from-laravel-application-rootexample.html
 https://stackoverflow.com/questions/37893515/google-spreadsheet-api-400-error-bad-request-unable-to-parse-range
+
+# hubspot consumer
+google: push data to hubspot
+google: setup hubspot
+https://www.youtube.com/watch?v=aM0pjIFZUiw
+https://knowledge.hubspot.com/account/get-started-with-hubspot-crm
+https://www.youtube.com/watch?v=0vOX3N2swjw
+https://socialiteproviders.netlify.com/providers/hub-spot.html
+google: create hubspot api youtube
+google: "hubspot" "php" "api" youtube
+
+https://deepfocus.in/using-the-hubspot-api-to-connect-a-web-form-with-hubspot-contacts/
+https://developers.hubspot.com/get-started
+https://developers.hubspot.com/docs/overview
+https://app.hubspot.com/developer/7511818/test-hub-ids
+https://github.com/HubSpot/hubspot-php
+JobHuntTest_hangar49 https://docs.google.com/spreadsheets/d/1itH8PruSyObaztP4hhHfavx8UEwBIII_gNAKPSSUib8/edit?usp=sharing
