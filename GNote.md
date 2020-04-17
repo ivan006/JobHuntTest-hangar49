@@ -48,3 +48,12 @@ https://developers.hubspot.com/docs/overview
 https://app.hubspot.com/developer/7511818/test-hub-ids
 https://github.com/HubSpot/hubspot-php
 JobHuntTest_hangar49 https://docs.google.com/spreadsheets/d/1itH8PruSyObaztP4hhHfavx8UEwBIII_gNAKPSSUib8/edit?usp=sharing
+google: turn hubspot object to array
+https://community.hubspot.com/t5/APIs-Integrations/Is-there-an-easy-way-to-separate-each-property-in-the-properties/td-p/230262
+google: make sure each subarray has same subkeys
+google: curl Errors: Status code: 401 Response: {"status":"error","message":"This hapikey () doesn't exist.","correlationId":"","requestId":""}
+https://community.hubspot.com/t5/APIs-Integrations/Trying-to-submit-a-form-to-create-contact-but-response-is-401/td-p/240288
+google: hubspot api read custom property
+https://knowledge.hubspot.com/crm-setup/manage-your-properties#edit-properties
+https://community.hubspot.com/t5/APIs-Integrations/i-can-t-access-my-custom-property-via-api/m-p/332251#M32205
+https://developers.hubspot.com/docs/methods/contacts/contact-properties-overview

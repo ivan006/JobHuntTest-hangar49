@@ -19,9 +19,9 @@
           <a href="SyncGoogleSheetsToLocalDB" type="button" class="btn btn-primary">
             Load Data from Sheet
           </a>
-          <button type="button" class="btn btn-primary">
+          <a href="SyncLocalDBToHubspot" type="button" class="btn btn-primary">
             Push to Hubspot
-          </button>
+          </a>
           <button type="button" class="btn btn-primary">
             Pull Data from Hubspot
           </button>
@@ -36,8 +36,25 @@
         <div class="">
           <pre>
             <?php
-            // echo json_encode($customers,JSON_PRETTY_PRINT);
-            echo $hubspot_data; 
+            // function recursify($data){
+            //   if (is_object($data) OR is_array($data)) {
+            //     foreach ($data as $key => $value) {
+            //       echo "<details style='margin-left: 15px;'>";
+            //       echo "<summary>";
+            //       echo $key;
+            //       echo "</summary>";
+            //
+            //       recursify($value);
+            //
+            //       echo "</details> ";
+            //     }
+            //   } else {
+            //     echo $data;
+            //   }
+            // }
+            // recursify($test);
+
+            echo $hubspot_data;
             ?>
           </pre>
         </div>

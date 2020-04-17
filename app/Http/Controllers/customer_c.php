@@ -8,6 +8,18 @@ use App\customer;
 
 class customer_c extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function apikey()
+    {
+      $result = "e5ee3461-4eda-46e7-969e-6d2d2e423b84";
+      return $result;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,44 +27,52 @@ class customer_c extends Controller
      */
     public function index()
     {
+      $test = array();
+      // if (1==1) {
+      //   $hubspot = \SevenShores\Hubspot\Factory::create('e5ee3461-4eda-46e7-969e-6d2d2e423b84');
+      //   // $test = $hubspot->contacts()->all();
+      //   $hubspot_data_raw = $hubspot->contacts()->all();
+      //   $hubspot_data = json_decode(json_encode($hubspot_data_raw), true);
+      //   $hubspot_data = json_encode($hubspot_data,JSON_PRETTY_PRINT);
+      //   // $hubspot_data = customer::read_hubspot_to_datatables($hubspot_data_raw);
+      //
+      //   // echo "<pre>";
+      //   // echo json_encode($hubspot_data,JSON_PRETTY_PRINT);
+      //   // echo json_encode($hubspot_data_raw,JSON_PRETTY_PRINT);
+      //
+      // }
       if (1==1) {
-        $hubspot = \SevenShores\Hubspot\Factory::create('c1eead18-5a35-4ada-b52f-dc6e1a084e5a');
-        
-        // $contact = $hubspot->contacts()->getByEmail("bh@hubspot.com");
-        // echo $contact->properties->email->value;
-
-        // Get an array of 10 contacts
-        // getting only the firstname and lastname properties
-        // and set the offset to 123456
-        $response = $hubspot->contacts()->all([
-          'count'     => 10,
-          'property'  => ['firstname', 'lastname'],
-          'vidOffset' => 0,
-        ]);
-
-        ob_start();
-
-        foreach ($response->contacts as $contact) {
-          echo sprintf(
-            "Contact name is %s %s." . PHP_EOL,
-            $contact->properties->firstname->value,
-            $contact->properties->lastname->value
-          );
+        $apikey = $this->apikey();
+        $cols = array(
+          "firstname",
+          "lastmodifieddate",
+          "company",
+          "lastname",
+          "localdb_id",
+        );
+        $get_req_properties = "";
+        foreach ($cols as $key => $value) {
+          $get_req_properties = $get_req_properties."&property=".$value;
         }
+        $hubspot_data =     file_get_contents(
+          "https://api.hubapi.com/contacts/v1/lists/all/contacts/all?hapikey="
+          .$apikey
+          // ."&count=2"
+          .$get_req_properties
+        );
+        $hubspot_data = json_decode($hubspot_data, true);
+        $hubspot_data = $hubspot_data["contacts"];
 
-        // Info for pagination
-        echo $response->{'has-more'};
-        echo $response->{'vid-offset'};
 
-        $hubspot_data = ob_get_contents();
+        // $hubspot_data = json_encode($hubspot_data,JSON_PRETTY_PRINT);
+        $hubspot_data = customer::read_hubspot_to_datatables($hubspot_data);
 
-        ob_end_clean();
-        // code...
+
       }
 
 
       $customers = customer::all();
-      return view('customers', compact('customers','hubspot_data'));
+      return view('customers', compact('customers','hubspot_data', 'test'));
     }
 
     /**
@@ -66,11 +86,11 @@ class customer_c extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    * Store a newly created resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
     public function SyncGoogleSheetsToLocalDB(Request $request)
     {
 
@@ -114,12 +134,58 @@ class customer_c extends Controller
             "kind" =>             $row[17],
             "tag" =>              $row[18],
             "month" =>            $row[19],
-          ]);
+            ]);
+          }
+
         }
+
+        return redirect('/');
 
       }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function SyncLocalDBToHubspot(Request $request)
+    {
+
+      // $arr = array(
+      //   'properties' => array(
+      //     array(
+      //       'property' => 'email',
+      //       'value' => 'apitest@hubspot.com'
+      //     ),
+      //     array(
+      //       'property' => 'firstname',
+      //       'value' => 'hubspot'
+      //     ),
+      //     array(
+      //       'property' => 'lastname',
+      //       'value' => 'user'
+      //     ),
+      //     array(
+      //       'property' => 'phone',
+      //       'value' => '555-1212'
+      //     )
+      //   )
+      // );
+
+
+      $customers = customer::all();
+
+
+
+      $apikey = $this->apikey();
+      customer::write_localDb_to_hubspot($customers, $apikey);
+
+
+
+
       return redirect('/');
+
 
     }
 
