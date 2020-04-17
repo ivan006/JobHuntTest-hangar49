@@ -57,3 +57,5 @@ google: hubspot api read custom property
 https://knowledge.hubspot.com/crm-setup/manage-your-properties#edit-properties
 https://community.hubspot.com/t5/APIs-Integrations/i-can-t-access-my-custom-property-via-api/m-p/332251#M32205
 https://developers.hubspot.com/docs/methods/contacts/contact-properties-overview
+https://community.hubspot.com/t5/APIs-Integrations/I-can-t-update-existing-contact-identified-by-a-custom-contact/td-p/332305
+https://stackoverflow.com/questions/33302442/get-info-from-external-api-url-using-php/33303776
