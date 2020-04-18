@@ -31,8 +31,11 @@
 
         </div>
         <hr>
-        <table id="example" class="display  table table-striped">
-        </table>
+        <form class="" action="/update" method="post">
+
+          <table id="example" class="display  table table-striped">
+          </table>
+        </form>
         <div class="">
           <pre>
             <?php
@@ -103,10 +106,11 @@
               "data": "company",
               "title": "company",
             },
-            {
-              "data": "company_website",
-              "title": "company_website",
-            },
+            // {
+            //   "data": "company_website",
+            //   "title": "company_website",
+            // },
+
             // {
             //   "data": "company_industry",
             //   "title": "company_industry",
@@ -147,6 +151,27 @@
             //   "data": "month",
             //   "title": "month",
             // },
+            {
+              "data": "company_website",
+              "render": function ( data, type, row, meta ) {
+                return '<select class="form-control" id="sel1" name="sellist1">'
+                +'<option>1</option>'
+                +'<option>2</option>'
+                +'<option>3</option>'
+                +'<option>4</option>'
+                +'</select>';
+              },
+              "title": "Action",
+            },
+            {
+              "data": "company_website",
+              "render": function ( data, type, row, meta ) {
+                return '<a href="" type="button" class="btn btn-primary">'
+                +"Update"+
+                '</a>';
+              },
+              "title": "Action",
+            },
           ]
         } );
       } );

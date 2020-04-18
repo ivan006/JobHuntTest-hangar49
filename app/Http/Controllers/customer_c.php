@@ -136,7 +136,23 @@ class customer_c extends Controller
       return redirect('/');
 
 
-      }
+    }
+
+    /**
+    * Update the specified resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  int  $id
+    * @return \Illuminate\Http\Response
+    */
+    public function update(Request $request, $id)
+    {
+
+      customer::update();
+
+      return redirect('/');
+
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -167,18 +183,6 @@ class customer_c extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
     {
         //
     }

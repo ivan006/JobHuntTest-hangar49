@@ -268,22 +268,31 @@ class customer extends Model
 
       // If there's a flight from Oakland to San Diego, set the price to $99.
       // If no matching model exists, create one.
-      // App\Flight::updateOrCreate(
-      //   ['id' => $customer["localdb_id"]],
-      //   ['last_name' => "updateorcreatetest"]
-      // );
+      self::updateOrCreate(
+        ['id' => $customer["localdb_id"]],
+        $key_value_pairs
+      );
       // up till here
-      // $flight = App\Flight::updateOrCreate(
+      // $flight = self::updateOrCreate(
       //   ['first_name' => 'alon', "last_name" => "Lich"],
       //   ['email' => "updateorcreate"]
       // );
+      // dd($customer);
 
       // echo "<pre>";
       // var_dump($key_value_pairs);
     }
     // exit;
 
-    return redirect('/');
+
+
+
+  }
+
+  public static function update()
+  {
+
+
 
 
   }
