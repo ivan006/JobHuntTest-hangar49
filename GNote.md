@@ -72,3 +72,4 @@ https://developers.hubspot.com/docs/methods/contacts/batch_create_or_update
 "last activity date (gmt+1)",
 "associated company" -->
 https://www.smartherd.com/add-default-column-value-to-tables-in-laravel/
+https://laravel.com/docs/7.x/eloquent#other-creation-methods

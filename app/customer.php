@@ -141,82 +141,6 @@ class customer extends Model
 
   }
 
-  public static function write_hubspot_to_localDb()
-  {
-
-
-    $customers = customer::read_hubspot();
-    $customers = json_decode($customers);
-
-    $cols = array(
-      array(
-        'laravel_name' => "first_name",
-        'hubspot_name' => "firstname",
-      ),
-      // array(
-      //   'laravel_name' => "lastmodifieddate",
-      //   'hubspot_name' => "lastmodifieddate",
-      // ),
-      array(
-        'laravel_name' => "company",
-        'hubspot_name' => "company",
-      ),
-      array(
-        'laravel_name' => "last_name",
-        'hubspot_name' => "lastname",
-      ),
-      // array(
-      //   'laravel_name' => "email",
-      //   'hubspot_name' => "email",
-      // ),
-      array(
-        'laravel_name' => "id",
-        'hubspot_name' => "localdb_id",
-      ),
-    );
-
-    foreach ($customers as $customer) {
-
-      // $key_value_pairs = array();
-      // $key_value_pairs["id"] = $customer["localdb_id"];
-      // foreach ($cols as $key => $value) {
-      //   $key_value_pairs[$value["laravel_name"]] = $customer[$value["hubspot_name"]];
-      // }
-
-      $key_value_pairs = array(
-
-
-            "first_name" =>       "test",
-            "last_name" =>        "test",
-            "email" =>            "test",
-
-            // "job_title_full" =>   "test",
-            // "job_title" =>        "test",
-            // "city" =>             "test",
-            // "country" =>          "test",
-            // "linkedin" =>         "test",
-            // "company" =>          "test",
-            // "company_website" =>  "test",
-            // "company_industry" => "test",
-            // "company_founded" =>  "test",
-            // "company_size" =>     "test",
-            // "company_linkedin" => "test",
-            // "company_headquarters" => "test",
-            // "email_reliability_status" => "test",
-            // "receiving_email_server" => "test",
-            // "kind" =>             "test",
-            // "tag" =>              "test",
-            // "month" =>            "test",
-
-      );
-      customer::create($key_value_pairs);
-
-    }
-
-    return redirect('/');
-
-
-  }
   public static function read_hubspot(){
     $apikey = customer::apikey();
     $cols = array(
@@ -270,6 +194,98 @@ class customer extends Model
   {
     $result = "e5ee3461-4eda-46e7-969e-6d2d2e423b84";
     return $result;
+  }
+
+  public static function write_hubspot_to_localDb()
+  {
+
+    $customers = customer::read_hubspot();
+    $customers = json_decode($customers, true);
+    // echo "<pre>";
+    // var_dump($customers);
+    // exit;
+    $cols = array(
+      array(
+        'laravel_name' => "first_name",
+        'hubspot_name' => "firstname",
+      ),
+      // array(
+      //   'laravel_name' => "lastmodifieddate",
+      //   'hubspot_name' => "lastmodifieddate",
+      // ),
+      array(
+        'laravel_name' => "company",
+        'hubspot_name' => "company",
+      ),
+      array(
+        'laravel_name' => "last_name",
+        'hubspot_name' => "lastname",
+      ),
+      // array(
+      //   'laravel_name' => "email",
+      //   'hubspot_name' => "email",
+      // ),
+      // array(
+      //   'laravel_name' => "id",
+      //   'hubspot_name' => "localdb_id",
+      // ),
+    );
+
+    foreach ($customers as $customer) {
+
+      $key_value_pairs = array();
+      foreach ($cols as $key => $value) {
+        $key_value_pairs[$value["laravel_name"]] = $customer[$value["hubspot_name"]];
+      }
+
+      // $key_value_pairs = array(
+      //
+      //
+      //       "first_name" =>       "test",
+      //       "last_name" =>        "test",
+      //       "email" =>            "test",
+      //
+      //       // "job_title_full" =>   "test",
+      //       // "job_title" =>        "test",
+      //       // "city" =>             "test",
+      //       // "country" =>          "test",
+      //       // "linkedin" =>         "test",
+      //       // "company" =>          "test",
+      //       // "company_website" =>  "test",
+      //       // "company_industry" => "test",
+      //       // "company_founded" =>  "test",
+      //       // "company_size" =>     "test",
+      //       // "company_linkedin" => "test",
+      //       // "company_headquarters" => "test",
+      //       // "email_reliability_status" => "test",
+      //       // "receiving_email_server" => "test",
+      //       // "kind" =>             "test",
+      //       // "tag" =>              "test",
+      //       // "month" =>            "test",
+      //
+      // );
+      // customer::create($key_value_pairs);
+
+      // If there's a flight from Oakland to San Diego, set the price to $99.
+      // If no matching model exists, create one.
+      // App\Flight::updateOrCreate(
+      //   ['id' => $customer["localdb_id"]],
+      //   ['last_name' => "updateorcreatetest"]
+      // );
+      // up till here
+      // $flight = App\Flight::updateOrCreate(
+      //   ['first_name' => 'alon', "last_name" => "Lich"],
+      //   ['email' => "updateorcreate"]
+      // );
+
+      // echo "<pre>";
+      // var_dump($key_value_pairs);
+    }
+    // exit;
+
+    return redirect('/');
+
+
   }
 
 
