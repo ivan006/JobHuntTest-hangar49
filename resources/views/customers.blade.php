@@ -22,9 +22,9 @@
           <a href="SyncLocalDBToHubspot" type="button" class="btn btn-primary">
             Push to Hubspot
           </a>
-          <button type="button" class="btn btn-primary">
+          <a href="SyncHubspotToLocalDB" type="button" class="btn btn-primary">
             Pull Data from Hubspot
-          </button>
+          </a>
           <button type="button" class="btn btn-primary">
             Push Records to Woodpecker
           </button>

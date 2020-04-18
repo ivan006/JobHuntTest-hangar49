@@ -29,9 +29,10 @@ class customer extends Model
     "month",
   ];
 
-  public static function write_localDb_to_hubspot($input)
+  public static function write_localDb_to_hubspot()
   {
     // $hubspot_data_array = array_column($input, 'properties');
+    $input = self::all();
     $input = json_decode(json_encode($input), true);
     //
     $cols = array(
@@ -145,6 +146,7 @@ class customer extends Model
 
 
     $customers = customer::write_hubspot_to_localDb_helper();
+    $customers = json_decode($customers);
 
     $cols = array(
       array(
@@ -176,40 +178,39 @@ class customer extends Model
     foreach ($customers as $customer) {
 
       // $key_value_pairs = array();
+      // $key_value_pairs["id"] = $customer["localdb_id"];
       // foreach ($cols as $key => $value) {
       //   $key_value_pairs[$value["laravel_name"]] = $customer[$value["hubspot_name"]];
       // }
+
       $key_value_pairs = array(
 
-          "first_name" =>       "test",
-          "last_name" =>        "test",
+
+            "first_name" =>       "test",
+            "last_name" =>        "test",
+            "email" =>            "test",
+
+            // "job_title_full" =>   "test",
+            // "job_title" =>        "test",
+            // "city" =>             "test",
+            // "country" =>          "test",
+            // "linkedin" =>         "test",
+            // "company" =>          "test",
+            // "company_website" =>  "test",
+            // "company_industry" => "test",
+            // "company_founded" =>  "test",
+            // "company_size" =>     "test",
+            // "company_linkedin" => "test",
+            // "company_headquarters" => "test",
+            // "email_reliability_status" => "test",
+            // "receiving_email_server" => "test",
+            // "kind" =>             "test",
+            // "tag" =>              "test",
+            // "month" =>            "test",
 
       );
       customer::create($key_value_pairs);
 
-
-      // customer::create([
-      //   "first_name" =>       $customer[0],
-      //   "last_name" =>        $customer[1],
-      //   "email" =>            $customer[2],
-      //   "job_title_full" =>   $customer[3],
-      //   "job_title" =>        $customer[4],
-      //   "city" =>             $customer[5],
-      //   "country" =>          $customer[6],
-      //   "linkedin" =>         $customer[7],
-      //   "company" =>          $customer[8],
-      //   "company_website" =>  $customer[9],
-      //   "company_industry" => $customer[10],
-      //   "company_founded" =>  $customer[11],
-      //   "company_size" =>     $customer[12],
-      //   "company_linkedin" => $customer[13],
-      //   "company_headquarters" => $customer[14],
-      //   "email_reliability_status" => $customer[15],
-      //   "receiving_email_server" => $customer[16],
-      //   "kind" =>             $customer[17],
-      //   "tag" =>              $customer[18],
-      //   "month" =>            $customer[19],
-      // ]);
     }
 
     return redirect('/');

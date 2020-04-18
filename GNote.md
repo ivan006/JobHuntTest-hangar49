@@ -60,3 +60,15 @@ https://developers.hubspot.com/docs/methods/contacts/contact-properties-overview
 https://community.hubspot.com/t5/APIs-Integrations/I-can-t-update-existing-contact-identified-by-a-custom-contact/td-p/332305
 https://stackoverflow.com/questions/33302442/get-info-from-external-api-url-using-php/33303776
 https://developers.hubspot.com/docs/methods/contacts/batch_create_or_update
+<!-- "localdb_id",
+
+"name",
+"email",
+"phone number",
+"lead status",
+"create dat (gmt+1)",
+
+"contact owner",
+"last activity date (gmt+1)",
+"associated company" -->
+https://www.smartherd.com/add-default-column-value-to-tables-in-laravel/
