@@ -90,8 +90,6 @@ class customer extends Model
         $i=$i+1;
       }
 
-      // self::write_localDb_to_hubspot_helper($result[$key]);
-
     }
 
     if (1==1) {
@@ -142,92 +140,76 @@ class customer extends Model
 
   }
 
-  public static function write_localDb_to_hubspot_helper($input)
-  {
-    $apikey = self::apikey();
-    $post_json = json_encode($input);
-    // $apikey = "c1eead18-5a35-4ada-b52f-dc6e1a084e5a";
-    $endpoint = 'https://api.hubapi.com/contacts/v1/contact?hapikey=' . $apikey;
-
-    if (1==1) {
-      // // code...
-      // $ch = @curl_init();
-      // @curl_setopt($ch, CURLOPT_POST, true);
-      // @curl_setopt($ch, CURLOPT_POSTFIELDS, $post_json);
-      // @curl_setopt($ch, CURLOPT_URL, $endpoint);
-      // @curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-      // @curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-      //
-      // $response = @curl_exec($ch);
-      // $status_code = @curl_getinfo($ch, CURLINFO_HTTP_CODE);
-      // $curl_errors = curl_error($ch);
-      //
-      // @curl_close($ch);
-    }
-
-    if (1==1) {
-      // code...
-      $ch = @curl_init();
-      @curl_setopt($ch, CURLOPT_POST, true);
-      @curl_setopt($ch, CURLOPT_POSTFIELDS, $post_json);
-      @curl_setopt($ch, CURLOPT_URL, $endpoint);
-      @curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-      @curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-      $response = @curl_exec($ch);
-      $status_code = @curl_getinfo($ch, CURLINFO_HTTP_CODE);
-      $curl_errors = curl_error($ch);
-
-      @curl_close($ch);
-    }
-
-
-
-    echo "curl Errors: " . $curl_errors;
-    echo "\nStatus code: " . $status_code;
-    $response = json_decode($response);
-    $response = json_encode($response,JSON_PRETTY_PRINT);
-    echo "<details><pre>";
-    echo "<summary>";
-    echo "\nResponse: ";
-    echo "</summary>";
-    echo $response;
-    echo "</pre></details>";
-    echo "<br>";
-
-
-  }
-
-  public static function write_hubspot_to_localDb($input)
+  public static function write_hubspot_to_localDb()
   {
 
 
-    $customers = customer::write_hubspot_to_localDb_helper($hubspot_data);
+    $customers = customer::write_hubspot_to_localDb_helper();
 
+    $cols = array(
+      array(
+        'laravel_name' => "first_name",
+        'hubspot_name' => "firstname",
+      ),
+      // array(
+      //   'laravel_name' => "lastmodifieddate",
+      //   'hubspot_name' => "lastmodifieddate",
+      // ),
+      array(
+        'laravel_name' => "company",
+        'hubspot_name' => "company",
+      ),
+      array(
+        'laravel_name' => "last_name",
+        'hubspot_name' => "lastname",
+      ),
+      // array(
+      //   'laravel_name' => "email",
+      //   'hubspot_name' => "email",
+      // ),
+      array(
+        'laravel_name' => "id",
+        'hubspot_name' => "localdb_id",
+      ),
+    );
 
     foreach ($customers as $customer) {
-      customer::create([
-        "first_name" =>       $customer[0],
-        "last_name" =>        $customer[1],
-        "email" =>            $customer[2],
-        "job_title_full" =>   $customer[3],
-        "job_title" =>        $customer[4],
-        "city" =>             $customer[5],
-        "country" =>          $customer[6],
-        "linkedin" =>         $customer[7],
-        "company" =>          $customer[8],
-        "company_website" =>  $customer[9],
-        "company_industry" => $customer[10],
-        "company_founded" =>  $customer[11],
-        "company_size" =>     $customer[12],
-        "company_linkedin" => $customer[13],
-        "company_headquarters" => $customer[14],
-        "email_reliability_status" => $customer[15],
-        "receiving_email_server" => $customer[16],
-        "kind" =>             $customer[17],
-        "tag" =>              $customer[18],
-        "month" =>            $customer[19],
-      ]);
+
+      // $key_value_pairs = array();
+      // foreach ($cols as $key => $value) {
+      //   $key_value_pairs[$value["laravel_name"]] = $customer[$value["hubspot_name"]];
+      // }
+      $key_value_pairs = array(
+
+          "first_name" =>       "test",
+          "last_name" =>        "test",
+
+      );
+      customer::create($key_value_pairs);
+
+
+      // customer::create([
+      //   "first_name" =>       $customer[0],
+      //   "last_name" =>        $customer[1],
+      //   "email" =>            $customer[2],
+      //   "job_title_full" =>   $customer[3],
+      //   "job_title" =>        $customer[4],
+      //   "city" =>             $customer[5],
+      //   "country" =>          $customer[6],
+      //   "linkedin" =>         $customer[7],
+      //   "company" =>          $customer[8],
+      //   "company_website" =>  $customer[9],
+      //   "company_industry" => $customer[10],
+      //   "company_founded" =>  $customer[11],
+      //   "company_size" =>     $customer[12],
+      //   "company_linkedin" => $customer[13],
+      //   "company_headquarters" => $customer[14],
+      //   "email_reliability_status" => $customer[15],
+      //   "receiving_email_server" => $customer[16],
+      //   "kind" =>             $customer[17],
+      //   "tag" =>              $customer[18],
+      //   "month" =>            $customer[19],
+      // ]);
     }
 
     return redirect('/');
@@ -235,52 +217,52 @@ class customer extends Model
 
   }
   public static function write_hubspot_to_localDb_helper(){
-    // $apikey = customer::apikey();
-    // $cols = array(
-    //   "firstname",
-    //   "lastmodifieddate",
-    //   "company",
-    //   "lastname",
-    //   "localdb_id",
-    // );
-    // $get_req_properties = "";
-    // foreach ($cols as $key => $value) {
-    //   $get_req_properties = $get_req_properties."&property=".$value;
-    // }
-    // $hubspot_data_raw =     file_get_contents(
-    //   "https://api.hubapi.com/contacts/v1/lists/all/contacts/all?hapikey="
-    //   .$apikey
-    //   // ."&count=2"
-    //   .$get_req_properties
-    // );
-    // $hubspot_data_raw = json_decode($hubspot_data_raw, true);
-    // $hubspot_data_raw = $hubspot_data_raw["contacts"];
-    //
-    //
-    //
-    //
-    // $cols = array(
-    //   "localdb_id",
-    //   "firstname",
-    //   "lastmodifieddate",
-    //   "company",
-    //   "lastname",
-    //   "localdb_id",
-    // );
-    // $hubspot_data = array();
-    // foreach ($hubspot_data_raw as $key => $value) {
-    //   $hubspot_data[$key] = array();
-    //   // $hubspot_data[$key]["id"] = $value["vid"];
-    //   foreach ($cols as $key2 => $value2) {
-    //     if (isset($value["properties"][$value2]['value'])) {
-    //       $hubspot_data[$key][$value2] = $value["properties"][$value2]['value'];
-    //     } else {
-    //       $hubspot_data[$key][$value2] = "";
-    //     }
-    //   }
-    // }
-    // $result = json_encode($hubspot_data,JSON_PRETTY_PRINT);
-    // return $result;
+    $apikey = customer::apikey();
+    $cols = array(
+      "firstname",
+      "lastmodifieddate",
+      "company",
+      "lastname",
+      "localdb_id",
+    );
+    $get_req_properties = "";
+    foreach ($cols as $key => $value) {
+      $get_req_properties = $get_req_properties."&property=".$value;
+    }
+    $hubspot_data_raw =     file_get_contents(
+      "https://api.hubapi.com/contacts/v1/lists/all/contacts/all?hapikey="
+      .$apikey
+      // ."&count=2"
+      .$get_req_properties
+    );
+    $hubspot_data_raw = json_decode($hubspot_data_raw, true);
+    $hubspot_data_raw = $hubspot_data_raw["contacts"];
+
+
+
+
+    $cols = array(
+      "localdb_id",
+      "firstname",
+      "lastmodifieddate",
+      "company",
+      "lastname",
+      "localdb_id",
+    );
+    $hubspot_data = array();
+    foreach ($hubspot_data_raw as $key => $value) {
+      $hubspot_data[$key] = array();
+      // $hubspot_data[$key]["id"] = $value["vid"];
+      foreach ($cols as $key2 => $value2) {
+        if (isset($value["properties"][$value2]['value'])) {
+          $hubspot_data[$key][$value2] = $value["properties"][$value2]['value'];
+        } else {
+          $hubspot_data[$key][$value2] = "";
+        }
+      }
+    }
+    $result = json_encode($hubspot_data,JSON_PRETTY_PRINT);
+    return $result;
   }
 
   public static function apikey()

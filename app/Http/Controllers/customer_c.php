@@ -115,10 +115,8 @@ class customer_c extends Controller
     public function SyncLocalDBToHubspot(Request $request)
     {
 
+      customer::write_localDb_to_hubspot();
 
-
-
-      customer::write_hubspot_to_localDb($customers);
       return redirect('/');
 
 
@@ -133,52 +131,10 @@ class customer_c extends Controller
     public function SyncHubspotToLocalDB(Request $request)
     {
 
+      customer::write_hubspot_to_localDb();
 
-      $client = new \Google_Client();
-      $client->setApplicationName("JobHuntTest_hangar49");
-      $client->setScopes(\Google_Service_Sheets::SPREADSHEETS);
-      $client->setAccessType("offline");
-      $client->setAuthConfig("../credentials.json");
-      $service = new \Google_Service_Sheets($client);
-      $spreadsheetId = "1itH8PruSyObaztP4hhHfavx8UEwBIII_gNAKPSSUib8";
-      $range = "A2:T7";
-      $response = $service->spreadsheets_values->get($spreadsheetId, $range);
-      $sheet_data = $response->getValues();
-      if (empty($sheet_data)) {
-        print "No data found.\n";
-      } else {
-        // $mask = "%10s %-10s %s\n";
-        // foreach ($sheet_data as $row) {
-        //   echo sprintf($mask, $row[2], $row[1], $row[0]);
-        // }
-        foreach ($sheet_data as $row) {
-          customer::create([
-            "first_name" =>       $row[0],
-            "last_name" =>        $row[1],
-            "email" =>            $row[2],
-            "job_title_full" =>   $row[3],
-            "job_title" =>        $row[4],
-            "city" =>             $row[5],
-            "country" =>          $row[6],
-            "linkedin" =>         $row[7],
-            "company" =>          $row[8],
-            "company_website" =>  $row[9],
-            "company_industry" => $row[10],
-            "company_founded" =>  $row[11],
-            "company_size" =>     $row[12],
-            "company_linkedin" => $row[13],
-            "company_headquarters" => $row[14],
-            "email_reliability_status" => $row[15],
-            "receiving_email_server" => $row[16],
-            "kind" =>             $row[17],
-            "tag" =>              $row[18],
-            "month" =>            $row[19],
-            ]);
-          }
+      return redirect('/');
 
-        }
-
-        return redirect('/');
 
       }
 

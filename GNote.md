@@ -59,3 +59,4 @@ https://community.hubspot.com/t5/APIs-Integrations/i-can-t-access-my-custom-prop
 https://developers.hubspot.com/docs/methods/contacts/contact-properties-overview
 https://community.hubspot.com/t5/APIs-Integrations/I-can-t-update-existing-contact-identified-by-a-custom-contact/td-p/332305
 https://stackoverflow.com/questions/33302442/get-info-from-external-api-url-using-php/33303776
+https://developers.hubspot.com/docs/methods/contacts/batch_create_or_update
