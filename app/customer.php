@@ -145,7 +145,7 @@ class customer extends Model
   {
 
 
-    $customers = customer::write_hubspot_to_localDb_helper();
+    $customers = customer::read_hubspot();
     $customers = json_decode($customers);
 
     $cols = array(
@@ -217,7 +217,7 @@ class customer extends Model
 
 
   }
-  public static function write_hubspot_to_localDb_helper(){
+  public static function read_hubspot(){
     $apikey = customer::apikey();
     $cols = array(
       "firstname",

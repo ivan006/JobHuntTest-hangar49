@@ -23,7 +23,7 @@ class customer_c extends Controller
       //   $hubspot_data_raw = $hubspot->contacts()->all();
       //   $hubspot_data = json_decode(json_encode($hubspot_data_raw), true);
       //   $hubspot_data = json_encode($hubspot_data,JSON_PRETTY_PRINT);
-      //   // $hubspot_data = customer::write_hubspot_to_localDb_helper($hubspot_data_raw);
+      //   // $hubspot_data = customer::read_hubspot($hubspot_data_raw);
       //
       //   // echo "<pre>";
       //   // echo json_encode($hubspot_data,JSON_PRETTY_PRINT);
@@ -31,7 +31,7 @@ class customer_c extends Controller
       //
       // }
 
-      $hubspot_data = customer::write_hubspot_to_localDb_helper();
+      $hubspot_data = customer::read_hubspot();
 
 
       $customers = customer::all();
