@@ -96,63 +96,6 @@
               "title": "city",
             },
             {
-              "data": "country",
-              "title": "country",
-            },
-            {
-              "data": "linkedin",
-              "title": "linkedin",
-            },
-            {
-              "data": "company",
-              "title": "company",
-            },
-            // {
-            //   "data": "company_website",
-            //   "title": "company_website",
-            // },
-
-            // {
-            //   "data": "company_industry",
-            //   "title": "company_industry",
-            // },
-            // {
-            //   "data": "company_founded",
-            //   "title": "company_founded",
-            // },
-            // {
-            //   "data": "company_size",
-            //   "title": "company_size",
-            // },
-            // {
-            //   "data": "company_linkedin",
-            //   "title": "company_linkedin",
-            // },
-            // {
-            //   "data": "company_headquarters",
-            //   "title": "company_headquarters",
-            // },
-            // {
-            //   "data": "email_reliability_status",
-            //   "title": "email_reliability_status",
-            // },
-            // {
-            //   "data": "receiving_email_server",
-            //   "title": "receiving_email_server",
-            // },
-            // {
-            //   "data": "kind",
-            //   "title": "kind",
-            // },
-            // {
-            //   "data": "tag",
-            //   "title": "tag",
-            // },
-            // {
-            //   "data": "month",
-            //   "title": "month",
-            // },
-            {
               "data": "company_website",
               "render": function ( data, type, row, meta ) {
                 return '<select class="form-control" id="sel1" name="sellist1">'
@@ -172,6 +115,63 @@
               "title": "Action",
 
             },
+            {
+              "data": "country",
+              "title": "country",
+            },
+            {
+              "data": "linkedin",
+              "title": "linkedin",
+            },
+            {
+              "data": "company",
+              "title": "company",
+            },
+            {
+              "data": "company_website",
+              "title": "company_website",
+            },
+            {
+              "data": "company_industry",
+              "title": "company_industry",
+            },
+            {
+              "data": "company_founded",
+              "title": "company_founded",
+            },
+            {
+              "data": "company_size",
+              "title": "company_size",
+            },
+            {
+              "data": "company_linkedin",
+              "title": "company_linkedin",
+            },
+            {
+              "data": "company_headquarters",
+              "title": "company_headquarters",
+            },
+            {
+              "data": "email_reliability_status",
+              "title": "email_reliability_status",
+            },
+            {
+              "data": "receiving_email_server",
+              "title": "receiving_email_server",
+            },
+            {
+              "data": "kind",
+              "title": "kind",
+            },
+            {
+              "data": "tag",
+              "title": "tag",
+            },
+            {
+              "data": "month",
+              "title": "month",
+            },
+
           ],
           rowReorder: {
             selector: 'td:nth-child(2)'

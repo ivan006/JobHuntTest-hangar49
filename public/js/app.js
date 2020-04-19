@@ -54068,23 +54068,7 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // import $ from 'jquery';
-// import 'datatables.net';
-// import 'datatables.net-dt';
-// import 'datatables.net-responsive';
-// import 'datatables.net-rowreorder';
-// import 'popper.js';
-// import $ from 'jquery';
-// import 'bootstrap';
-// import 'datatables.net';
-// import 'datatables.net-dt';
-// import 'datatables.net-responsive';
-// import 'datatables.net-rowreorder';
-//
-// // require('datatables.net-dt');
-// // require( 'datatables.net-responsive' )( window, $ );
-// // require( 'datatables.net-rowreorder' )( window, $ );
-
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js")["default"];
 window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
