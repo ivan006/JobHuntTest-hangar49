@@ -148,7 +148,7 @@ class customer_c extends Controller
     public function update(Request $request, $id)
     {
 
-      customer::update();
+      customer::custom_update();
 
       return redirect('/');
 

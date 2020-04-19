@@ -75,3 +75,4 @@ https://www.smartherd.com/add-default-column-value-to-tables-in-laravel/
 https://laravel.com/docs/7.x/eloquent#other-creation-methods
 google: use App\Flight Laravel
 google: laravel App\Flight Maximum execution time of 30 seconds exceeded
+https://datatables.net/extensions/rowreorder/examples/initialisation/responsive.html

@@ -289,7 +289,7 @@ class customer extends Model
 
   }
 
-  public static function update()
+  public static function custom_update()
   {
 
 

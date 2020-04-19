@@ -20,3 +20,4 @@ Route::get('/', 'customer_c@index');
 Route::get('/SyncGoogleSheetsToLocalDB', 'customer_c@SyncGoogleSheetsToLocalDB');
 Route::get('/SyncLocalDBToHubspot', 'customer_c@SyncLocalDBToHubspot');
 Route::get('/SyncHubspotToLocalDB', 'customer_c@SyncHubspotToLocalDB');
+Route::get('/update', 'customer_c@update');

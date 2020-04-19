@@ -32,8 +32,7 @@
         </div>
         <hr>
         <form class="" action="/update" method="post">
-
-          <table id="example" class="display  table table-striped">
+          <table id="example" class="table table-striped  display nowrap dataTable dtr-inline collapsed" style="width:100%">
           </table>
         </form>
         <div class="">
@@ -65,7 +64,9 @@
 
       <script src="{{ asset('/js/app.js') }}"></script>
       <script type="text/javascript">
+
       $(document).ready( function () {
+
         // $('#table_id').DataTable();
         $('#example').dataTable( {
           "data": <?php echo json_encode($customers,JSON_PRETTY_PRINT); ?>,
@@ -166,15 +167,21 @@
             {
               "data": "company_website",
               "render": function ( data, type, row, meta ) {
-                return '<a href="" type="button" class="btn btn-primary">'
-                +"Update"+
-                '</a>';
+                return '<button type="submit" class="btn btn-primary" name="xx['+data+']" value="Update">Update</button>';
               },
               "title": "Action",
+
             },
-          ]
+          ],
+          rowReorder: {
+            selector: 'td:nth-child(2)'
+          },
+          responsive: true
+
         } );
       } );
+
+
 
       </script>
     </body>
