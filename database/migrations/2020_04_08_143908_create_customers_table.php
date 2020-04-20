@@ -37,6 +37,8 @@ class CreateCustomersTable extends Migration
           $table->string('kind')->default("");
           $table->string('tag')->default("");
           $table->string('month')->default("");
+          $table->string('phone_number')->default("");
+          $table->string('lead_status')->default("");
         });
     }
 

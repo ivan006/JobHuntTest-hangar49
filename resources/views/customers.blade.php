@@ -13,6 +13,11 @@
     </head>
     <body>
       <div class="container" style="margin-top:30px">
+        <?php
+        // echo "<pre>";
+        // echo json_encode($lookups[47]["options"],JSON_PRETTY_PRINT);
+        // echo "</pre>";
+        ?>
         <h2>Customer Data Syncer</h2>
         <hr>
         <div class="">
@@ -31,7 +36,8 @@
 
         </div>
         <hr>
-        <form class="" action="/update" method="post">
+        <form class="" action="update" method="post">
+          {{csrf_field()}}
           <table id="example" class="table table-striped  display nowrap dataTable dtr-inline collapsed" style="width:100%">
           </table>
         </form>
@@ -56,8 +62,25 @@
             // }
             // recursify($test);
 
-            echo $hubspot_data;
+            // echo $hubspot_data;
             ?>
+
+            Button 1 must
+              - sync data from google sheets to localDB		(done)
+              - and display data on screen			(done)
+              - also data must add to and not replace the original dataset so that future data can be added		(done)
+            Button 2 must
+              - sync data from localDB to Hubspot		(pending)
+            Button 3 must
+              - sync data from Hubspot to localDb		(pending)
+              - and give diff report				(pending)
+            Button 4 must
+              - sync data from localDB to Woodpecker		(pending)
+            Update button must
+              - update Woodpecker and localDB			(pending)
+
+
+
           </pre>
         </div>
       </div>
@@ -66,6 +89,17 @@
       <script type="text/javascript">
 
       $(document).ready( function () {
+        <?php
+        if (isset($lookups[47]["options"])) {
+          $lead_status_options = $lookups[47]["options"];
+        } else {
+          $lead_status_options = "[]";
+        }
+        ?>
+        var lead_status_options = <?php echo json_encode($lookups[47]["options"]); ?>;
+        lead_status_options.push({label:"None",value:""});
+        // lead_status_options.unshift({label:"None",value:""});
+        // alert(JSON.stringify(lead_status_options));
 
         // $('#table_id').DataTable();
         $('#example').dataTable( {
@@ -84,6 +118,49 @@
               "title": "email",
             },
             {
+              "data": "created_at",
+              "title": "created_at",
+            },
+            {
+              "data": "phone_number",
+              "title": "phone_number",
+            },
+            {
+              "data": "lead_status",
+              "render": function ( data, type, row, meta ) {
+                var val = '<select class="form-control" id="" name="rows['+row['id']+'][lead_status]" style="width: 200px;>';
+
+                var selectToggle = "";
+                $.each(lead_status_options, function(i, lead_status_option){
+                  if (lead_status_option['value'] == data) {
+                    selectToggle = "selected";
+                  } else {
+                    selectToggle = "";
+                  }
+                  val = val+'<option value="'+lead_status_option['value']+'" '+selectToggle+'>'+lead_status_option['label']+'</option>';
+                })
+                val = val+'</select>';
+                return val;
+
+
+                // return '<select class="form-control" id="sel1" name="sellist1">'
+                // +'<option>1</option>'
+                // +'<option>2</option>'
+                // +'<option>3</option>'
+                // +'<option>4</option>'
+                // +'</select>';
+              },
+              "title": "lead_status",
+            },
+            {
+              "data": "id",
+              "render": function ( data, type, row, meta ) {
+                return '<button type="submit" class="btn btn-primary" name="submit" value="'+data+'">Update</button>';
+              },
+              "title": "lead_status",
+
+            },
+            {
               "data": "job_title_full",
               "title": "job_title_full",
             },
@@ -94,26 +171,6 @@
             {
               "data": "city",
               "title": "city",
-            },
-            {
-              "data": "company_website",
-              "render": function ( data, type, row, meta ) {
-                return '<select class="form-control" id="sel1" name="sellist1">'
-                +'<option>1</option>'
-                +'<option>2</option>'
-                +'<option>3</option>'
-                +'<option>4</option>'
-                +'</select>';
-              },
-              "title": "Action",
-            },
-            {
-              "data": "company_website",
-              "render": function ( data, type, row, meta ) {
-                return '<button type="submit" class="btn btn-primary" name="xx['+data+']" value="Update">Update</button>';
-              },
-              "title": "Action",
-
             },
             {
               "data": "country",

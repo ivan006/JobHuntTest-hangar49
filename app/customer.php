@@ -27,6 +27,8 @@ class customer extends Model
     "kind",
     "tag",
     "month",
+    "phone_number",
+    "lead_status",
   ];
 
   public static function write_localDb_to_hubspot()
@@ -295,6 +297,21 @@ class customer extends Model
 
 
 
+  }
+
+  public static function read_hubspot_lookups(){
+    $apikey = customer::apikey();
+
+
+    $hubspot_data_raw =     file_get_contents(
+      "https://api.hubapi.com/properties/v1/contacts/properties?hapikey="
+      .$apikey
+    );
+    $hubspot_data_raw = json_decode($hubspot_data_raw, true);
+    // $hubspot_data_raw = $hubspot_data_raw["contacts"];
+
+
+    return $hubspot_data_raw;
   }
 
 

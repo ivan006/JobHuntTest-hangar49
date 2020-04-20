@@ -76,3 +76,6 @@ https://laravel.com/docs/7.x/eloquent#other-creation-methods
 google: use App\Flight Laravel
 google: laravel App\Flight Maximum execution time of 30 seconds exceeded
 https://datatables.net/extensions/rowreorder/examples/initialisation/responsive.html
+http://live.datatables.net/yetekubo/2/edit
+https://community.hubspot.com/t5/APIs-Integrations/Get-all-lead-status-options/td-p/222542
+https://developers.hubspot.com/docs/methods/contacts/v2/get_contacts_properties

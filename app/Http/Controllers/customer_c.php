@@ -35,7 +35,8 @@ class customer_c extends Controller
 
 
       $customers = customer::all();
-      return view('customers', compact('customers','hubspot_data', 'test'));
+      $lookups = customer::read_hubspot_lookups();
+      return view('customers', compact('customers','hubspot_data', 'test', 'lookups'));
     }
 
     /**
@@ -145,10 +146,19 @@ class customer_c extends Controller
     * @param  int  $id
     * @return \Illuminate\Http\Response
     */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
+      $id = $request->all()['submit'];
+      // $id = ;
+      $lead_status = $request->all()["rows"][$id]["lead_status"];
+      // $result = array($id => $lead_status);
 
-      customer::custom_update();
+      $var = customer::find($id);
+      $var->lead_status = $lead_status;
+      $var->save();
+
+      // dd($result);
+      // customer::custom_update();
 
       return redirect('/');
 
