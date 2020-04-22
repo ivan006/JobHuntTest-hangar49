@@ -79,3 +79,19 @@ https://datatables.net/extensions/rowreorder/examples/initialisation/responsive.
 http://live.datatables.net/yetekubo/2/edit
 https://community.hubspot.com/t5/APIs-Integrations/Get-all-lead-status-options/td-p/222542
 https://developers.hubspot.com/docs/methods/contacts/v2/get_contacts_properties
+logins:
+https://app.woodpecker.co
+ivan.copeland2015@gmail.com
+Readyforanything123
+14 day trail 2020-04-21 to ...
+https://help.woodpecker.co/category/14-api-docs
+https://stackoverflow.com/questions/17230246/php-curl-get-request-and-requests-body
+https://help.woodpecker.co/article/132-old-api-docs
+https://thisinterestsme.com/php-curl-http-auth/
+https://help.woodpecker.co/article/119-prospects
+https://stackoverflow.com/questions/1939609/convert-command-line-curl-to-php-curl
+curl generators start
+https://curlbuilder.com/
+https://incarnate.github.io/curl-to-php/
+curl generators end
+https://stackoverflow.com/questions/24419999/laravel-migration-change-to-make-a-column-nullable

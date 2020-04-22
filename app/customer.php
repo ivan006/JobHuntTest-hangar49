@@ -28,52 +28,53 @@ class customer extends Model
     "tag",
     "month",
     "phone_number",
-    "lead_status",
+    "woodpecker_status",
   ];
+
+  public static function apikey()
+  {
+    $result = array(
+      "hubspot" => "e5ee3461-4eda-46e7-969e-6d2d2e423b84",
+      "woodpecker" => "84565.4e74d807c5b32502fa3472b362fd4975325e2c22f095e36cb676c493f5500321",
+    );
+    return $result;
+  }
 
   public static function write_localDb_to_hubspot()
   {
-    // $hubspot_data_array = array_column($input, 'properties');
+    $body = self::reformat_localDb_to_hubspot();
+    $body = json_encode($body);
+    $apikey = self::apikey()["hubspot"];
+    $endpoint = 'https://api.hubapi.com/contacts/v1/contact/batch/?hapikey=' . $apikey;
+    $userpwd = "";
+
+    self::curl_post($body,$endpoint,$userpwd);
+
+  }
+
+  public static function reformat_localDb_to_hubspot()
+  {
     $input = self::all();
     $input = json_decode(json_encode($input), true);
-    //
+
     $cols = array(
       array(
-        'laravel_name' => "first_name",
-        'hubspot_name' => "firstname",
-      ),
-      // array(
-      //   'laravel_name' => "lastmodifieddate",
-      //   'hubspot_name' => "lastmodifieddate",
-      // ),
-      array(
-        'laravel_name' => "company",
-        'hubspot_name' => "company",
+        'local_name' => "first_name",
+        'remote_name' => "firstname",
       ),
       array(
-        'laravel_name' => "last_name",
-        'hubspot_name' => "lastname",
+        'local_name' => "company",
+        'remote_name' => "company",
       ),
-      // array(
-      //   'laravel_name' => "email",
-      //   'hubspot_name' => "email",
-      // ),
       array(
-        'laravel_name' => "id",
-        'hubspot_name' => "localdb_id",
+        'local_name' => "last_name",
+        'remote_name' => "lastname",
+      ),
+      array(
+        'local_name' => "id",
+        'remote_name' => "localdb_id",
       ),
     );
-    // foreach ($input as $key => $value) {
-    //   $result[$key] = array();
-    //   $result[$key]["properties"] = array();
-    //   $i = 0;
-    //   foreach ($value as $key2 => $value2) {
-    //     $result[$key]["properties"][$i]["property"] = $key2;
-    //     $result[$key]["properties"][$i]["value"] = $value2;
-    //     $i=$i+1;
-    //   }
-    // }
-
 
     foreach ($input as $key => $value) {
       $result[$key] = array();
@@ -83,10 +84,10 @@ class customer extends Model
       $i = 0;
 
       foreach ($cols as $key2 => $value2) {
-        $result[$key]["properties"][$i]["property"] = $value2["hubspot_name"];
+        $result[$key]["properties"][$i]["property"] = $value2["remote_name"];
 
-        if (isset($value[$value2["laravel_name"]])) {
-          $result[$key]["properties"][$i]["value"] = $value[$value2["laravel_name"]];
+        if (isset($value[$value2["local_name"]])) {
+          $result[$key]["properties"][$i]["value"] = $value[$value2["local_name"]];
         } else {
           $result[$key]["properties"][$i]["value"] = "";
         }
@@ -94,57 +95,14 @@ class customer extends Model
       }
 
     }
-
-    if (1==1) {
-      // code...
-      $apikey = self::apikey();
-      $post_json = json_encode($result);
-      // $apikey = "c1eead18-5a35-4ada-b52f-dc6e1a084e5a";
-      $endpoint = 'https://api.hubapi.com/contacts/v1/contact/batch/?hapikey=' . $apikey;
-
-
-      $ch = @curl_init();
-      @curl_setopt($ch, CURLOPT_POST, true);
-      @curl_setopt($ch, CURLOPT_POSTFIELDS, $post_json);
-      @curl_setopt($ch, CURLOPT_URL, $endpoint);
-      @curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-      @curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-      $response = @curl_exec($ch);
-      $status_code = @curl_getinfo($ch, CURLINFO_HTTP_CODE);
-      $curl_errors = curl_error($ch);
-
-      @curl_close($ch);
-
-
-
-
-
-      echo "curl Errors: " . $curl_errors;
-      echo "\nStatus code: " . $status_code;
-      $response = json_decode($response);
-      $response = json_encode($response,JSON_PRETTY_PRINT);
-      echo "<details><pre>";
-      echo "<summary>";
-      echo "\nResponse: ";
-      echo "</summary>";
-      echo $response;
-      echo "</pre></details>";
-      echo "<br>";
-    }
-
-
-    // echo "<pre>";
-    // echo json_encode($result,JSON_PRETTY_PRINT);
-    // exit;
-
-
+    return $result;
 
 
   }
 
-  public static function read_hubspot(){
-    $apikey = customer::apikey();
+  public static function read_hubspot()
+  {
+    $apikey = customer::apikey()["hubspot"];
     $cols = array(
       "firstname",
       "lastmodifieddate",
@@ -192,127 +150,203 @@ class customer extends Model
     return $result;
   }
 
-  public static function apikey()
-  {
-    $result = "e5ee3461-4eda-46e7-969e-6d2d2e423b84";
-    return $result;
-  }
-
   public static function write_hubspot_to_localDb()
   {
 
     $customers = customer::read_hubspot();
     $customers = json_decode($customers, true);
-    // echo "<pre>";
-    // var_dump($customers);
-    // exit;
+
     $cols = array(
       array(
-        'laravel_name' => "first_name",
-        'hubspot_name' => "firstname",
-      ),
-      // array(
-      //   'laravel_name' => "lastmodifieddate",
-      //   'hubspot_name' => "lastmodifieddate",
-      // ),
-      array(
-        'laravel_name' => "company",
-        'hubspot_name' => "company",
+        'local_name' => "first_name",
+        'remote_name' => "firstname",
       ),
       array(
-        'laravel_name' => "last_name",
-        'hubspot_name' => "lastname",
+        'local_name' => "company",
+        'remote_name' => "company",
       ),
-      // array(
-      //   'laravel_name' => "email",
-      //   'hubspot_name' => "email",
-      // ),
-      // array(
-      //   'laravel_name' => "id",
-      //   'hubspot_name' => "localdb_id",
-      // ),
+      array(
+        'local_name' => "last_name",
+        'remote_name' => "lastname",
+      ),
     );
 
     foreach ($customers as $customer) {
-
       $key_value_pairs = array();
       foreach ($cols as $key => $value) {
-        $key_value_pairs[$value["laravel_name"]] = $customer[$value["hubspot_name"]];
+        $key_value_pairs[$value["local_name"]] = $customer[$value["remote_name"]];
       }
-
-      // $key_value_pairs = array(
-      //
-      //
-      //       "first_name" =>       "test",
-      //       "last_name" =>        "test",
-      //       "email" =>            "test",
-      //
-      //       // "job_title_full" =>   "test",
-      //       // "job_title" =>        "test",
-      //       // "city" =>             "test",
-      //       // "country" =>          "test",
-      //       // "linkedin" =>         "test",
-      //       // "company" =>          "test",
-      //       // "company_website" =>  "test",
-      //       // "company_industry" => "test",
-      //       // "company_founded" =>  "test",
-      //       // "company_size" =>     "test",
-      //       // "company_linkedin" => "test",
-      //       // "company_headquarters" => "test",
-      //       // "email_reliability_status" => "test",
-      //       // "receiving_email_server" => "test",
-      //       // "kind" =>             "test",
-      //       // "tag" =>              "test",
-      //       // "month" =>            "test",
-      //
-      // );
-      // customer::create($key_value_pairs);
-
-      // If there's a flight from Oakland to San Diego, set the price to $99.
-      // If no matching model exists, create one.
       self::updateOrCreate(
         ['id' => $customer["localdb_id"]],
         $key_value_pairs
       );
-      // up till here
-      // $flight = self::updateOrCreate(
-      //   ['first_name' => 'alon', "last_name" => "Lich"],
-      //   ['email' => "updateorcreate"]
-      // );
-      // dd($customer);
-
-      // echo "<pre>";
-      // var_dump($key_value_pairs);
     }
-    // exit;
 
+  }
+
+  public static function read_hubspot_lookups()
+  {
+
+    $apikey = customer::apikey()["hubspot"];
+    $endpoint = "https://api.hubapi.com/properties/v1/contacts/properties?hapikey="
+    .$apikey;
+    $userpwd = "";
+
+    $response = self::curl_get($endpoint,$userpwd);
+    $response = json_decode($response, true);
+
+
+    return $response;
+  }
+
+  public static function read_woodpecker()
+  {
+
+    // code...
+    $apikey = self::apikey()["woodpecker"];
+
+    $userpwd = array(
+      "username" => $apikey,
+      "password" => "X",
+    );
+    $endpoint = 'https://api.woodpecker.co/rest/v1/prospects';
+
+    $response = self::curl_get($endpoint,$userpwd);
+
+
+    return $response;
 
 
 
   }
 
-  public static function custom_update()
+  public static function write_localDb_to_woodpecker()
+  {
+
+    $body = self::reformat_localDb_to_woodpecker();
+    $body = json_encode($body);
+    $endpoint = 'https://api.woodpecker.co/rest/v1/add_prospects_list';
+
+    $userpwd = array(
+      "username" => $apikey = self::apikey()["woodpecker"],
+      "password" => "X",
+    );
+
+    self::curl_post($body,$endpoint,$userpwd);
+
+  }
+
+  public static function reformat_localDb_to_woodpecker()
   {
 
 
+    $input = self::all();
+    $input = json_decode(json_encode($input), true);
 
 
-  }
-
-  public static function read_hubspot_lookups(){
-    $apikey = customer::apikey();
-
-
-    $hubspot_data_raw =     file_get_contents(
-      "https://api.hubapi.com/properties/v1/contacts/properties?hapikey="
-      .$apikey
+    $cols = array(
+      array(
+        'local_name' => "first_name",
+        'remote_name' => "first_name",
+      ),
+      array(
+        'local_name' => "company",
+        'remote_name' => "company",
+      ),
+      array(
+        'local_name' => "last_name",
+        'remote_name' => "last_name",
+      ),
     );
-    $hubspot_data_raw = json_decode($hubspot_data_raw, true);
-    // $hubspot_data_raw = $hubspot_data_raw["contacts"];
 
 
-    return $hubspot_data_raw;
+    foreach ($input as $key => $value) {
+      $prospects[$key] = array();
+      $prospects[$key]["email"] = $value["email"];
+
+      $i = 0;
+
+      foreach ($cols as $key2 => $value2) {
+
+        if (isset($value[$value2["local_name"]])) {
+          $prospects[$key][$value2["remote_name"]] = $value[$value2["local_name"]];
+        } else {
+          $prospects[$key][$value2["remote_name"]] = "";
+        }
+        $i=$i+1;
+      }
+
+    }
+
+    $result = array(
+      "update" => "true",
+      "prospects" => $prospects,
+    );
+    return $result;
+
+
   }
+
+  public static function curl_post($body,$endpoint,$userpwd)
+  {
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $endpoint);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+    if (!empty($userpwd)) {
+      curl_setopt($ch, CURLOPT_USERPWD, $userpwd['username'] . ":" . $userpwd['password']);
+    }
+
+    $headers = array();
+    $headers[] = 'Content-Type: application/json';
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+    $result = curl_exec($ch);
+    if (curl_errno($ch)) {
+      echo 'Error:' . curl_error($ch);
+    }
+    curl_close($ch);
+    // var_dump($result);
+
+
+
+  }
+
+  public static function curl_get($endpoint,$userpwd)
+  {
+
+
+    $ch = @curl_init();
+    if (!empty($userpwd)) {
+      curl_setopt($ch, CURLOPT_USERPWD, $userpwd['username'] . ":" . $userpwd['password']);
+    }
+    @curl_setopt($ch, CURLOPT_URL, $endpoint);
+    @curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      'Accept: application/json',
+      'Content-Type: application/json'
+    ));
+    @curl_setopt($ch, CURLOPT_HEADER, 0);
+    @curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = @curl_exec($ch);
+    $status_code = @curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curl_errors = curl_error($ch);
+
+    @curl_close($ch);
+
+
+    $response = json_encode(json_decode($response, true),JSON_PRETTY_PRINT);
+    return $response;
+
+
+  }
+
+
+
+
+
 
 
 

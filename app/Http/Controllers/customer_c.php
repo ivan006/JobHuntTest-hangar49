@@ -16,37 +16,19 @@ class customer_c extends Controller
      */
     public function index()
     {
-      $test = array();
-      // if (1==1) {
-      //   $hubspot = \SevenShores\Hubspot\Factory::create('e5ee3461-4eda-46e7-969e-6d2d2e423b84');
-      //   // $test = $hubspot->contacts()->all();
-      //   $hubspot_data_raw = $hubspot->contacts()->all();
-      //   $hubspot_data = json_decode(json_encode($hubspot_data_raw), true);
-      //   $hubspot_data = json_encode($hubspot_data,JSON_PRETTY_PRINT);
-      //   // $hubspot_data = customer::read_hubspot($hubspot_data_raw);
-      //
-      //   // echo "<pre>";
-      //   // echo json_encode($hubspot_data,JSON_PRETTY_PRINT);
-      //   // echo json_encode($hubspot_data_raw,JSON_PRETTY_PRINT);
-      //
-      // }
+
 
       $hubspot_data = customer::read_hubspot();
+      $woodpecker_data = customer::read_woodpecker();
+      $reformat_localDb_to_woodpecker = customer::reformat_localDb_to_woodpecker();
+
 
 
       $customers = customer::all();
       $lookups = customer::read_hubspot_lookups();
-      return view('customers', compact('customers','hubspot_data', 'test', 'lookups'));
-    }
+      return view('customers', compact('customers','hubspot_data', 'lookups', 'woodpecker_data', 'reformat_localDb_to_woodpecker'));
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+
     }
 
     /**
@@ -57,18 +39,20 @@ class customer_c extends Controller
     */
     public function SyncGoogleSheetsToLocalDB(Request $request)
     {
+      if (1==1) {
+        $client = new \Google_Client();
+        $client->setApplicationName("JobHuntTest_hangar49");
+        $client->setScopes(\Google_Service_Sheets::SPREADSHEETS);
+        $client->setAccessType("offline");
+        $client->setAuthConfig("../credentials.json");
+        $service = new \Google_Service_Sheets($client);
+        $spreadsheetId = "1itH8PruSyObaztP4hhHfavx8UEwBIII_gNAKPSSUib8";
+        $range = "A2:T7";
+        $response = $service->spreadsheets_values->get($spreadsheetId, $range);
+        $sheet_data = $response->getValues();
+      }
 
 
-      $client = new \Google_Client();
-      $client->setApplicationName("JobHuntTest_hangar49");
-      $client->setScopes(\Google_Service_Sheets::SPREADSHEETS);
-      $client->setAccessType("offline");
-      $client->setAuthConfig("../credentials.json");
-      $service = new \Google_Service_Sheets($client);
-      $spreadsheetId = "1itH8PruSyObaztP4hhHfavx8UEwBIII_gNAKPSSUib8";
-      $range = "A2:T7";
-      $response = $service->spreadsheets_values->get($spreadsheetId, $range);
-      $sheet_data = $response->getValues();
       if (empty($sheet_data)) {
         print "No data found.\n";
       } else {
@@ -98,14 +82,14 @@ class customer_c extends Controller
             "kind" =>             $row[17],
             "tag" =>              $row[18],
             "month" =>            $row[19],
-            ]);
-          }
-
+          ]);
         }
 
-        return redirect('/');
-
       }
+
+      return redirect('/');
+
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -140,6 +124,22 @@ class customer_c extends Controller
     }
 
     /**
+    * Store a newly created resource in storage.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @return \Illuminate\Http\Response
+    */
+    public function SyncLocalDBToWoodpecker(Request $request)
+    {
+
+      customer::write_localDb_to_woodpecker();
+
+      return redirect('/');
+
+
+    }
+
+    /**
     * Update the specified resource in storage.
     *
     * @param  \Illuminate\Http\Request  $request
@@ -150,61 +150,22 @@ class customer_c extends Controller
     {
       $id = $request->all()['submit'];
       // $id = ;
-      $lead_status = $request->all()["rows"][$id]["lead_status"];
-      // $result = array($id => $lead_status);
+      $woodpecker_status = $request->all()["rows"][$id]["woodpecker_status"];
+      // $result = array($id => $woodpecker_status);
 
       $var = customer::find($id);
-      $var->lead_status = $lead_status;
+      $var->woodpecker_status = $woodpecker_status;
       $var->save();
 
-      // dd($result);
+      dd($request->all());
       // customer::custom_update();
+
+
+      // curl_post($body,$endpoint,$userpwd)
 
       return redirect('/');
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

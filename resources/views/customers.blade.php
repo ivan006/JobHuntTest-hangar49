@@ -30,9 +30,9 @@
           <a href="SyncHubspotToLocalDB" type="button" class="btn btn-primary">
             Pull Data from Hubspot
           </a>
-          <button type="button" class="btn btn-primary">
+          <a href="SyncLocalDBToWoodpecker" type="button" class="btn btn-primary">
             Push Records to Woodpecker
-          </button>
+          </a>
 
         </div>
         <hr>
@@ -43,27 +43,16 @@
         </form>
         <div class="">
           <pre>
-            <?php
-            // function recursify($data){
-            //   if (is_object($data) OR is_array($data)) {
-            //     foreach ($data as $key => $value) {
-            //       echo "<details style='margin-left: 15px;'>";
-            //       echo "<summary>";
-            //       echo $key;
-            //       echo "</summary>";
-            //
-            //       recursify($value);
-            //
-            //       echo "</details> ";
-            //     }
-            //   } else {
-            //     echo $data;
-            //   }
-            // }
-            // recursify($test);
-
-            // echo $hubspot_data;
-            ?>
+            <table>
+              <tr>
+                <td>
+                  <?php //echo $woodpecker_data; ?>
+                </td>
+                <td>
+                  <?php //echo json_encode($reformat_localDb_to_woodpecker,JSON_PRETTY_PRINT); ?>
+                </td>
+              </tr>
+            </table>
 
             Button 1 must
               - sync data from google sheets to localDB		(done)
@@ -91,15 +80,15 @@
       $(document).ready( function () {
         <?php
         if (isset($lookups[47]["options"])) {
-          $lead_status_options = $lookups[47]["options"];
+          $woodpecker_status_options = $lookups[47]["options"];
         } else {
-          $lead_status_options = "[]";
+          $woodpecker_status_options = "[]";
         }
         ?>
-        var lead_status_options = <?php echo json_encode($lookups[47]["options"]); ?>;
-        lead_status_options.push({label:"None",value:""});
-        // lead_status_options.unshift({label:"None",value:""});
-        // alert(JSON.stringify(lead_status_options));
+        var woodpecker_status_options = <?php echo json_encode($lookups[47]["options"]); ?>;
+        woodpecker_status_options.push({label:"None",value:null});
+        // woodpecker_status_options.unshift({label:"None",value:""});
+        // alert(JSON.stringify(woodpecker_status_options));
 
         // $('#table_id').DataTable();
         $('#example').dataTable( {
@@ -126,21 +115,36 @@
               "title": "phone_number",
             },
             {
-              "data": "lead_status",
+              "data": "woodpecker_status",
               "render": function ( data, type, row, meta ) {
-                var val = '<select class="form-control" id="" name="rows['+row['id']+'][lead_status]" style="width: 200px;>';
+
+                // if (data == null) {
+                //   alert(data+" "+row["first_name"]);
+                // }
+                var woodpecker_status_html = '<select class="form-control" id="" name="rows['+row['id']+'][woodpecker_status]" style="width: 200px;">';
+                var option_html = '';
 
                 var selectToggle = "";
-                $.each(lead_status_options, function(i, lead_status_option){
-                  if (lead_status_option['value'] == data) {
+                $.each(woodpecker_status_options, function(i, woodpecker_status_option){
+                  if (woodpecker_status_option['value'] == data) {
                     selectToggle = "selected";
                   } else {
                     selectToggle = "";
                   }
-                  val = val+'<option value="'+lead_status_option['value']+'" '+selectToggle+'>'+lead_status_option['label']+'</option>';
+                  var value = woodpecker_status_option['value'];
+                  if (woodpecker_status_option['value'] === null) {
+                    value = "";
+                  }
+                  option_html = '<option value="'+value+'" '+selectToggle+'>'+woodpecker_status_option['label']+'</option>';
+
+                  woodpecker_status_html = woodpecker_status_html+option_html;
                 })
-                val = val+'</select>';
-                return val;
+                woodpecker_status_html = woodpecker_status_html+'</select>';
+
+                var email_html = '<input type="text" name="rows['+row['id']+'][email]" value="'+row['email']+'" style="display:none;">';
+                var inputs_html = woodpecker_status_html+email_html;
+                // alert(woodpecker_status_html);
+                return inputs_html;
 
 
                 // return '<select class="form-control" id="sel1" name="sellist1">'
@@ -150,14 +154,14 @@
                 // +'<option>4</option>'
                 // +'</select>';
               },
-              "title": "lead_status",
+              "title": "woodpecker_status",
             },
             {
               "data": "id",
               "render": function ( data, type, row, meta ) {
                 return '<button type="submit" class="btn btn-primary" name="submit" value="'+data+'">Update</button>';
               },
-              "title": "lead_status",
+              "title": "woodpecker_status",
 
             },
             {

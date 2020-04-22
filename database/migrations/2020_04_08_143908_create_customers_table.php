@@ -38,7 +38,7 @@ class CreateCustomersTable extends Migration
           $table->string('tag')->default("");
           $table->string('month')->default("");
           $table->string('phone_number')->default("");
-          $table->string('lead_status')->default("");
+          $table->string('woodpecker_status')->default(null)->nullable();
         });
     }
 
