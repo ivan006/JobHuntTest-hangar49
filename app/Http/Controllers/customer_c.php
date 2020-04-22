@@ -17,7 +17,12 @@ class customer_c extends Controller
     public function index()
     {
 
+      if (isset($_GET["report"])) {
+        $report = json_decode($_GET["report"],true);
 
+      } else {
+        $report = array();
+      }
       $hubspot_data = customer::read_hubspot();
       $woodpecker_data = customer::read_woodpecker();
       $reformat_localDb_to_woodpecker = customer::reformat_localDb_to_woodpecker();
@@ -25,8 +30,8 @@ class customer_c extends Controller
 
 
       $customers = customer::all();
-      $lookups = customer::read_hubspot_lookups();
-      return view('customers', compact('customers','hubspot_data', 'lookups', 'woodpecker_data', 'reformat_localDb_to_woodpecker'));
+      $lookups_woodpecker_status = customer::read_woodpecker_lookups();
+      return view('customers', compact('customers','hubspot_data', 'lookups_woodpecker_status', 'woodpecker_data', 'reformat_localDb_to_woodpecker', 'report'));
 
 
     }
@@ -116,9 +121,10 @@ class customer_c extends Controller
     public function SyncHubspotToLocalDB(Request $request)
     {
 
-      customer::write_hubspot_to_localDb();
+      $result = customer::write_hubspot_to_localDb();
+      $result = urlencode(json_encode($result));
 
-      return redirect('/');
+      return redirect('/?report='.$result);
 
 
     }
@@ -150,6 +156,7 @@ class customer_c extends Controller
     {
       $id = $request->all()['submit'];
       // $id = ;
+      $email = $request->all()["rows"][$id]["email"];
       $woodpecker_status = $request->all()["rows"][$id]["woodpecker_status"];
       // $result = array($id => $woodpecker_status);
 
@@ -157,12 +164,28 @@ class customer_c extends Controller
       $var->woodpecker_status = $woodpecker_status;
       $var->save();
 
-      dd($request->all());
+      // dd($request->all());
       // customer::custom_update();
 
 
-      // curl_post($body,$endpoint,$userpwd)
+      $endpoint = 'https://api.woodpecker.co/rest/v1/add_prospects_list';
+      $userpwd = array(
+        "username" => $apikey = customer::apikey()["woodpecker"],
+        "password" => "X",
+      );
+      $body = array(
+        "update" => "true",
+        "prospects" => array(
+          array(
+            "email" => $email,
+            "status" => $woodpecker_status,
 
+          )
+        )
+      );
+      $body = json_encode($body);
+      customer::curl_post($body,$endpoint,$userpwd);
+      // exit;
       return redirect('/');
 
     }

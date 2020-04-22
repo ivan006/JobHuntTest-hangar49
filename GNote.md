@@ -95,3 +95,6 @@ https://curlbuilder.com/
 https://incarnate.github.io/curl-to-php/
 curl generators end
 https://stackoverflow.com/questions/24419999/laravel-migration-change-to-make-a-column-nullable
+https://stackoverflow.com/questions/51028944/laravel-5-6-get-changed-values-after-updateorcreate
+https://stackoverflow.com/questions/45702409/laravel-check-if-updateorcreate-performed-update
+https://stackoverflow.com/questions/51028944/laravel-5-6-get-changed-values-after-updateorcreate

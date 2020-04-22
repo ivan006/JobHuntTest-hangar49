@@ -75,7 +75,7 @@ class customer extends Model
         'remote_name' => "localdb_id",
       ),
     );
-
+    $result = array();
     foreach ($input as $key => $value) {
       $result[$key] = array();
       $result[$key]["email"] = $value["email"];
@@ -156,6 +156,10 @@ class customer extends Model
     $customers = customer::read_hubspot();
     $customers = json_decode($customers, true);
 
+    $customers_local = customer::all();
+    $customers_local = json_decode(json_encode($customers_local), true);
+
+
     $cols = array(
       array(
         'local_name' => "first_name",
@@ -170,33 +174,77 @@ class customer extends Model
         'remote_name' => "lastname",
       ),
     );
-
-    foreach ($customers as $customer) {
+    $changes = array();
+    $customer_object = new customer;
+    foreach ($customers as $key => $customer) {
       $key_value_pairs = array();
-      foreach ($cols as $key => $value) {
+      foreach ($cols as $key2 => $value) {
         $key_value_pairs[$value["local_name"]] = $customer[$value["remote_name"]];
       }
-      self::updateOrCreate(
+      $customer_change = $customer_object->updateOrCreate(
         ['id' => $customer["localdb_id"]],
         $key_value_pairs
       );
+      if ($customer_change->wasChanged()) {
+        $changes[$key]["name"] = $customer_change->first_name;
+        $changes[$key]["changes"] = $customer_change->getChanges();
+      }
+
     }
+
+    $changes = json_decode(json_encode($changes), true);
+    return $changes;
 
   }
 
-  public static function read_hubspot_lookups()
+  public static function read_woodpecker_lookups()
   {
 
-    $apikey = customer::apikey()["hubspot"];
-    $endpoint = "https://api.hubapi.com/properties/v1/contacts/properties?hapikey="
-    .$apikey;
-    $userpwd = "";
-
-    $response = self::curl_get($endpoint,$userpwd);
-    $response = json_decode($response, true);
 
 
-    return $response;
+    // $apikey = customer::apikey()["hubspot"];
+    // $endpoint = "https://api.hubapi.com/properties/v1/contacts/properties?hapikey="
+    // .$apikey;
+    // $userpwd = "";
+    //
+    // $result = self::curl_get($endpoint,$userpwd);
+    // $result = json_decode($result, true);
+    //
+    //
+    // if (isset($result[47]["options"])) {
+    //   $result = $result[47]["options"];
+    // } else {
+    //   $result = "[]";
+    // }
+    //
+    $result = array(
+      array(
+        "label" => "Active",
+        "value" => "ACTIVE",
+      ),
+      array(
+        "label" => "Blacklisted",
+        "value" => "BLACKLISTED",
+      ),
+      array(
+        "label" => "Responded",
+        "value" => "RESPONDED",
+      ),
+      array(
+        "label" => "Invalid",
+        "value" => "INVALID",
+      ),
+      array(
+        "label" => "Bounced",
+        "value" => "BOUNCED",
+      ),
+      array(
+        "label" => "Opt-out",
+        "value" => "OPT-OUT",
+      ),
+    );
+
+    return $result;
   }
 
   public static function read_woodpecker()
@@ -260,6 +308,7 @@ class customer extends Model
     );
 
 
+    $prospects = array();
     foreach ($input as $key => $value) {
       $prospects[$key] = array();
       $prospects[$key]["email"] = $value["email"];
@@ -308,7 +357,7 @@ class customer extends Model
       echo 'Error:' . curl_error($ch);
     }
     curl_close($ch);
-    // var_dump($result);
+    var_dump($result);
 
 
 
