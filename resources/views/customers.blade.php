@@ -38,14 +38,19 @@
             <strong>Diff report</strong>
             <?php foreach ($report as $key => $value): ?>
               <?php if (!empty($value)): ?>
-                <br>
-                <strong><?php echo $value["name"] ?>: </strong>
-                <?php foreach ($value["changes"] as $key2 => $value2): ?>
-                  <?php echo $key2.": ".$value2."; "; ?>
+                <!-- <br> -->
 
-                <?php endforeach; ?>
+                <details>
+                  <summary>
+                    <strong><?php echo $value["name"] ?>: </strong>
+                  </summary>
+                  <?php foreach ($value["changes"] as $key2 => $value2): ?>
+                    <?php echo $key2.": ".$value2."; "; ?>
+                    <br>
 
-                <br>
+                  <?php endforeach; ?>
+                </details>
+
               <?php endif; ?>
             <?php endforeach; ?>
           </div>
@@ -115,10 +120,6 @@
               "title": "email",
             },
             {
-              "data": "created_at",
-              "title": "created_at",
-            },
-            {
               "data": "woodpecker_status",
               "render": function ( data, type, row, meta ) {
 
@@ -167,6 +168,10 @@
               },
               "title": "woodpecker_status",
 
+            },
+            {
+              "data": "created_at",
+              "title": "created_at",
             },
             {
               "data": "phone_number",

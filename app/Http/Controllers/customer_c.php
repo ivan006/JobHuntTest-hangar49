@@ -45,6 +45,8 @@ class customer_c extends Controller
     */
     public function SyncGoogleSheetsToLocalDB(Request $request)
     {
+      $customer_object = new customer;
+      $apikey = $customer_object->apikey()["googlesheets"];
       if (1==1) {
         $client = new \Google_Client();
         $client->setApplicationName("JobHuntTest_hangar49");
@@ -52,7 +54,7 @@ class customer_c extends Controller
         $client->setAccessType("offline");
         $client->setAuthConfig("../credentials.json");
         $service = new \Google_Service_Sheets($client);
-        $spreadsheetId = "1itH8PruSyObaztP4hhHfavx8UEwBIII_gNAKPSSUib8";
+        $spreadsheetId = $apikey;
         $range = "A2:T7";
         $response = $service->spreadsheets_values->get($spreadsheetId, $range);
         $sheet_data = $response->getValues();

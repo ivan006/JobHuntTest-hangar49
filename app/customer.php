@@ -34,8 +34,12 @@ class customer extends Model
   public function apikey()
   {
     $result = array(
-      "hubspot" => "e5ee3461-4eda-46e7-969e-6d2d2e423b84",
-      "woodpecker" => "84565.4e74d807c5b32502fa3472b362fd4975325e2c22f095e36cb676c493f5500321",
+      // "hubspot" => "e5ee3461-4eda-46e7-969e-6d2d2e423b84",
+      "hubspot" => "c06a4d74-dc05-484a-8158-300ea67ed18a",
+      // "woodpecker" => "84565.4e74d807c5b32502fa3472b362fd4975325e2c22f095e36cb676c493f5500321",
+      "woodpecker" => "78173.9ed5e81922bf4a5ed1f8c42bbb534822f3904671a7af2d797834284dd53b9680",
+      // "googlesheets" => "1itH8PruSyObaztP4hhHfavx8UEwBIII_gNAKPSSUib8",
+      "googlesheets" => "1fn3QpOndShigo1fxMPHYGyWXPr8688sOaZvneZCvPsw",
     );
     return $result;
   }
@@ -50,7 +54,7 @@ class customer extends Model
     $userpwd = "";
 
     $customer_object->curl_post($body,$endpoint,$userpwd);
-
+    // exit;
   }
 
   public function reformat_localDb_to_hubspot()
@@ -106,11 +110,12 @@ class customer extends Model
     $customer_object = new customer;
     $apikey = $customer_object->apikey()["hubspot"];
     $cols = array(
+      "localdb_id",
       "firstname",
       "lastmodifieddate",
       "company",
+      "email",
       "lastname",
-      "localdb_id",
     );
     $get_req_properties = "";
     foreach ($cols as $key => $value) {
@@ -128,14 +133,7 @@ class customer extends Model
 
 
 
-    $cols = array(
-      "localdb_id",
-      "firstname",
-      "lastmodifieddate",
-      "company",
-      "lastname",
-      "localdb_id",
-    );
+
     $hubspot_data = array();
     foreach ($hubspot_data_raw as $key => $value) {
       $hubspot_data[$key] = array();
@@ -157,7 +155,7 @@ class customer extends Model
     $customer_object = new customer;
     $customers = $customer_object->read_hubspot();
     $customers = json_decode($customers, true);
-
+    // dd($customers);
     $customers_local = customer::all();
     $customers_local = json_decode(json_encode($customers_local), true);
 
@@ -172,6 +170,10 @@ class customer extends Model
         'remote_name' => "company",
       ),
       array(
+        'local_name' => "email",
+        'remote_name' => "email",
+      ),
+      array(
         'local_name' => "last_name",
         'remote_name' => "lastname",
       ),
@@ -180,20 +182,27 @@ class customer extends Model
     $customer_object = new customer;
     foreach ($customers as $key => $customer) {
       $key_value_pairs = array();
-      foreach ($cols as $key2 => $value) {
-        $key_value_pairs[$value["local_name"]] = $customer[$value["remote_name"]];
-      }
-      $customer_change = $customer_object->updateOrCreate(
-        ['id' => $customer["localdb_id"]],
-        $key_value_pairs
-      );
-      if ($customer_change->wasChanged()) {
-        $changes[$key]["name"] = $customer_change->first_name;
-        $changes[$key]["changes"] = $customer_change->getChanges();
+      if (isset($customer["email"])) {
+        foreach ($cols as $key2 => $value) {
+
+          $key_value_pairs[$value["local_name"]] = $customer[$value["remote_name"]];
+        }
+        $customer_change = $customer_object->updateOrCreate(
+          ['id' => $customer["localdb_id"]],
+          $key_value_pairs
+        );
+        if ($customer_change->wasChanged()) {
+          $changes[$key]["name"] = $customer_change->first_name;
+          $changes[$key]["changes"] = $customer_change->getChanges();
+        } elseif ($customer_change->wasRecentlyCreated) {
+          $changes[$key]["name"] = $customer_change->first_name;
+          $changes[$key]["changes"] = $customer_change->attributes;
+        }
+        // $changes_object[$key] = $customer_change;
       }
 
     }
-
+    // dd($changes_object);
     $changes = json_decode(json_encode($changes), true);
     return $changes;
 
