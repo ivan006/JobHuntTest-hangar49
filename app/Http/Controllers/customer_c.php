@@ -23,14 +23,15 @@ class customer_c extends Controller
       } else {
         $report = array();
       }
-      $hubspot_data = customer::read_hubspot();
-      $woodpecker_data = customer::read_woodpecker();
-      $reformat_localDb_to_woodpecker = customer::reformat_localDb_to_woodpecker();
+      $customer_object = new customer;
+      $hubspot_data = $customer_object->read_hubspot();
+      $woodpecker_data = $customer_object->read_woodpecker();
+      $reformat_localDb_to_woodpecker = $customer_object->reformat_localDb_to_woodpecker();
 
 
 
-      $customers = customer::all();
-      $lookups_woodpecker_status = customer::read_woodpecker_lookups();
+      $customers = $customer_object->all();
+      $lookups_woodpecker_status = $customer_object->read_woodpecker_lookups();
       return view('customers', compact('customers','hubspot_data', 'lookups_woodpecker_status', 'woodpecker_data', 'reformat_localDb_to_woodpecker', 'report'));
 
 
@@ -105,7 +106,8 @@ class customer_c extends Controller
     public function SyncLocalDBToHubspot(Request $request)
     {
 
-      customer::write_localDb_to_hubspot();
+      $customer_object = new customer;
+      $customer_object->write_localDb_to_hubspot();
 
       return redirect('/');
 
@@ -120,8 +122,8 @@ class customer_c extends Controller
     */
     public function SyncHubspotToLocalDB(Request $request)
     {
-
-      $result = customer::write_hubspot_to_localDb();
+      $customer_object = new customer;
+      $result = $customer_object->write_hubspot_to_localDb();
       $result = urlencode(json_encode($result));
 
       return redirect('/?report='.$result);
@@ -137,8 +139,8 @@ class customer_c extends Controller
     */
     public function SyncLocalDBToWoodpecker(Request $request)
     {
-
-      customer::write_localDb_to_woodpecker();
+      $customer_object = new customer;
+      $customer_object->write_localDb_to_woodpecker();
 
       return redirect('/');
 
@@ -167,10 +169,10 @@ class customer_c extends Controller
       // dd($request->all());
       // customer::custom_update();
 
-
+      $customer_object = new customer;
       $endpoint = 'https://api.woodpecker.co/rest/v1/add_prospects_list';
       $userpwd = array(
-        "username" => $apikey = customer::apikey()["woodpecker"],
+        "username" => $apikey = $customer_object->apikey()["woodpecker"],
         "password" => "X",
       );
       $body = array(
@@ -184,7 +186,7 @@ class customer_c extends Controller
         )
       );
       $body = json_encode($body,JSON_PRETTY_PRINT);
-      customer::curl_post($body,$endpoint,$userpwd);
+      $customer_object->curl_post($body,$endpoint,$userpwd);
       echo $body;
       // exit;
       return redirect('/');

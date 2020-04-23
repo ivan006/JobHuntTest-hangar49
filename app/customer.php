@@ -31,7 +31,7 @@ class customer extends Model
     "woodpecker_status",
   ];
 
-  public static function apikey()
+  public function apikey()
   {
     $result = array(
       "hubspot" => "e5ee3461-4eda-46e7-969e-6d2d2e423b84",
@@ -40,19 +40,20 @@ class customer extends Model
     return $result;
   }
 
-  public static function write_localDb_to_hubspot()
+  public function write_localDb_to_hubspot()
   {
-    $body = self::reformat_localDb_to_hubspot();
+    $customer_object = new customer;
+    $body = $customer_object->reformat_localDb_to_hubspot();
     $body = json_encode($body);
-    $apikey = self::apikey()["hubspot"];
+    $apikey = $customer_object->apikey()["hubspot"];
     $endpoint = 'https://api.hubapi.com/contacts/v1/contact/batch/?hapikey=' . $apikey;
     $userpwd = "";
 
-    self::curl_post($body,$endpoint,$userpwd);
+    $customer_object->curl_post($body,$endpoint,$userpwd);
 
   }
 
-  public static function reformat_localDb_to_hubspot()
+  public function reformat_localDb_to_hubspot()
   {
     $input = self::all();
     $input = json_decode(json_encode($input), true);
@@ -100,9 +101,10 @@ class customer extends Model
 
   }
 
-  public static function read_hubspot()
+  public function read_hubspot()
   {
-    $apikey = customer::apikey()["hubspot"];
+    $customer_object = new customer;
+    $apikey = $customer_object->apikey()["hubspot"];
     $cols = array(
       "firstname",
       "lastmodifieddate",
@@ -150,10 +152,10 @@ class customer extends Model
     return $result;
   }
 
-  public static function write_hubspot_to_localDb()
+  public function write_hubspot_to_localDb()
   {
-
-    $customers = customer::read_hubspot();
+    $customer_object = new customer;
+    $customers = $customer_object->read_hubspot();
     $customers = json_decode($customers, true);
 
     $customers_local = customer::all();
@@ -197,17 +199,17 @@ class customer extends Model
 
   }
 
-  public static function read_woodpecker_lookups()
+  public function read_woodpecker_lookups()
   {
 
 
-
-    // $apikey = customer::apikey()["hubspot"];
+    // $customer_object = new customer;
+    // $apikey = $customer_object->apikey()["hubspot"];
     // $endpoint = "https://api.hubapi.com/properties/v1/contacts/properties?hapikey="
     // .$apikey;
     // $userpwd = "";
     //
-    // $result = self::curl_get($endpoint,$userpwd);
+    // $result = $customer_object->curl_get($endpoint,$userpwd);
     // $result = json_decode($result, true);
     //
     //
@@ -247,11 +249,12 @@ class customer extends Model
     return $result;
   }
 
-  public static function read_woodpecker()
+  public function read_woodpecker()
   {
 
     // code...
-    $apikey = self::apikey()["woodpecker"];
+    $customer_object = new customer;
+    $apikey = $customer_object->apikey()["woodpecker"];
 
     $userpwd = array(
       "username" => $apikey,
@@ -259,7 +262,7 @@ class customer extends Model
     );
     $endpoint = 'https://api.woodpecker.co/rest/v1/prospects';
 
-    $response = self::curl_get($endpoint,$userpwd);
+    $response = $customer_object->curl_get($endpoint,$userpwd);
 
 
     return $response;
@@ -268,23 +271,23 @@ class customer extends Model
 
   }
 
-  public static function write_localDb_to_woodpecker()
+  public function write_localDb_to_woodpecker()
   {
-
-    $body = self::reformat_localDb_to_woodpecker();
+    $customer_object = new customer;
+    $body = $customer_object->reformat_localDb_to_woodpecker();
     $body = json_encode($body);
     $endpoint = 'https://api.woodpecker.co/rest/v1/add_prospects_list';
 
     $userpwd = array(
-      "username" => $apikey = self::apikey()["woodpecker"],
+      "username" => $apikey = $customer_object->apikey()["woodpecker"],
       "password" => "X",
     );
 
-    self::curl_post($body,$endpoint,$userpwd);
+    $customer_object->curl_post($body,$endpoint,$userpwd);
 
   }
 
-  public static function reformat_localDb_to_woodpecker()
+  public function reformat_localDb_to_woodpecker()
   {
 
 
@@ -336,7 +339,7 @@ class customer extends Model
 
   }
 
-  public static function curl_post($body,$endpoint,$userpwd)
+  public function curl_post($body,$endpoint,$userpwd)
   {
     $ch = curl_init();
 
@@ -363,7 +366,7 @@ class customer extends Model
 
   }
 
-  public static function curl_get($endpoint,$userpwd)
+  public function curl_get($endpoint,$userpwd)
   {
 
 
