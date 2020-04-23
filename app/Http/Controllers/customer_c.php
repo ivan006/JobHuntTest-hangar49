@@ -14,7 +14,7 @@ class customer_c extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
 
       if (null !== session('_old_input')) {

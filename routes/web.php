@@ -17,7 +17,7 @@ Route::get('/welcome', function () {
     return view('welcome');
 });
 Route::get('/', 'customer_c@index');
-Route::post('/', 'customer_c@index');
+// Route::post('/', 'customer_c@index');
 Route::get('/SyncGoogleSheetsToLocalDB', 'customer_c@SyncGoogleSheetsToLocalDB');
 Route::get('/SyncLocalDBToHubspot', 'customer_c@SyncLocalDBToHubspot');
 Route::get('/SyncHubspotToLocalDB', 'customer_c@SyncHubspotToLocalDB');

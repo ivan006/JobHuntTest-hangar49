@@ -79,9 +79,9 @@
               - and display data on screen			(done)
               - also data must add to and not replace the original dataset so that future data can be added		(done)
             Button 2 must
-              - sync data from localDB to Hubspot		(processing)
+              - sync data from localDB to Hubspot		(done)
             Button 3 must
-              - sync data from Hubspot to localDb		(processing)
+              - sync data from Hubspot to localDb		(done)
               - and give diff report				(done)
             Button 4 must
               - sync data from localDB to Woodpecker		(done)
