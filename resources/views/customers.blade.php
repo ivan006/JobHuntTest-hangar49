@@ -74,7 +74,7 @@
               </tr>
             </table>
 
-            Button 1 must
+            <!-- Button 1 must
               - sync data from google sheets to localDB		(done)
               - and display data on screen			(done)
               - also data must add to and not replace the original dataset so that future data can be added		(done)
@@ -86,7 +86,7 @@
             Button 4 must
               - sync data from localDB to Woodpecker		(done)
             Update button must
-              - update Woodpecker and localDB			(done)
+              - update Woodpecker and localDB			(done) -->
 
 
 

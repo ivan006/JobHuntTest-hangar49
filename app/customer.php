@@ -34,8 +34,8 @@ class customer extends Model
   public function apikey()
   {
     $result = array(
-      // "hubspot" => "e5ee3461-4eda-46e7-969e-6d2d2e423b84",
-      "hubspot" => "c06a4d74-dc05-484a-8158-300ea67ed18a",
+      "hubspot" => "e5ee3461-4eda-46e7-969e-6d2d2e423b84",
+      // "hubspot" => "c06a4d74-dc05-484a-8158-300ea67ed18a",
       "woodpecker" => "84565.4e74d807c5b32502fa3472b362fd4975325e2c22f095e36cb676c493f5500321",
       // "woodpecker" => "78173.9ed5e81922bf4a5ed1f8c42bbb534822f3904671a7af2d797834284dd53b9680",
       // "googlesheets" => "1itH8PruSyObaztP4hhHfavx8UEwBIII_gNAKPSSUib8",
@@ -392,7 +392,7 @@ class customer extends Model
       echo 'Error:' . curl_error($ch);
     }
     curl_close($ch);
-    var_dump($result);
+    echo $result;
 
 
 
