@@ -66,6 +66,7 @@
               <tr>
                 <td>
                   <?php //echo $woodpecker_data; ?>
+                  <?php //echo $hubspot_data; ?>
                 </td>
                 <td>
                   <?php //echo json_encode($reformat_localDb_to_woodpecker,JSON_PRETTY_PRINT); ?>
@@ -81,11 +82,11 @@
               - sync data from localDB to Hubspot		(processing)
             Button 3 must
               - sync data from Hubspot to localDb		(processing)
-              - and give diff report				(processing)
+              - and give diff report				(done)
             Button 4 must
               - sync data from localDB to Woodpecker		(processing)
             Update button must
-              - update Woodpecker and localDB			(processing)
+              - update Woodpecker and localDB			(done)
 
 
 
@@ -99,7 +100,7 @@
       $(document).ready( function () {
 
         var woodpecker_status_options = <?php echo json_encode($lookups_woodpecker_status); ?>;
-        woodpecker_status_options.push({label:"None",value:null});
+
         // woodpecker_status_options.unshift({label:"None",value:""});
         // alert(JSON.stringify(woodpecker_status_options));
 
@@ -140,7 +141,8 @@
                   if (woodpecker_status_option['value'] === null) {
                     value = "";
                   }
-                  option_html = '<option value="'+value+'" '+selectToggle+'>'+woodpecker_status_option['label']+'</option>';
+
+                  option_html = '<option value="'+value+'" '+selectToggle+' '+woodpecker_status_option['disabled_toggle']+'>'+woodpecker_status_option['label']+'</option>';
 
                   woodpecker_status_html = woodpecker_status_html+option_html;
                 })

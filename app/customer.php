@@ -36,8 +36,8 @@ class customer extends Model
     $result = array(
       // "hubspot" => "e5ee3461-4eda-46e7-969e-6d2d2e423b84",
       "hubspot" => "c06a4d74-dc05-484a-8158-300ea67ed18a",
-      // "woodpecker" => "84565.4e74d807c5b32502fa3472b362fd4975325e2c22f095e36cb676c493f5500321",
-      "woodpecker" => "78173.9ed5e81922bf4a5ed1f8c42bbb534822f3904671a7af2d797834284dd53b9680",
+      "woodpecker" => "84565.4e74d807c5b32502fa3472b362fd4975325e2c22f095e36cb676c493f5500321",
+      // "woodpecker" => "78173.9ed5e81922bf4a5ed1f8c42bbb534822f3904671a7af2d797834284dd53b9680",
       // "googlesheets" => "1itH8PruSyObaztP4hhHfavx8UEwBIII_gNAKPSSUib8",
       "googlesheets" => "1fn3QpOndShigo1fxMPHYGyWXPr8688sOaZvneZCvPsw",
     );
@@ -232,26 +232,32 @@ class customer extends Model
       array(
         "label" => "Active",
         "value" => "ACTIVE",
+        "disabled_toggle" => "",
       ),
       array(
         "label" => "Blacklisted",
-        "value" => "BLACKLISTED",
+        "value" => "BLACKLIST",
+        "disabled_toggle" => "",
       ),
       array(
         "label" => "Responded",
-        "value" => "RESPONDED",
+        "value" => "REPLIED",
+        "disabled_toggle" => "",
       ),
       array(
         "label" => "Invalid",
         "value" => "INVALID",
+        "disabled_toggle" => "",
       ),
       array(
         "label" => "Bounced",
         "value" => "BOUNCED",
+        "disabled_toggle" => "",
       ),
       array(
         "label" => "Opt-out",
         "value" => "OPT-OUT",
+        "disabled_toggle" => "disabled",
       ),
     );
 
@@ -400,6 +406,167 @@ class customer extends Model
 
     $response = json_encode(json_decode($response, true),JSON_PRETTY_PRINT);
     return $response;
+
+
+  }
+
+  public function cross_db_mapping()
+  {
+
+
+    $result = array(
+      array(
+        'google_sheets' => "",
+        'localdb' => "id",
+        'woodpecker' => "id",
+        'hubspot' => "localdb_id",
+      ),
+      array(
+        'google_sheets' => "",
+        'localdb' => "created_at",
+        'woodpecker' => "",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "",
+        'localdb' => "updated_at",
+        'woodpecker' => "",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "first_name",
+        'localdb' => "first_name",
+        'woodpecker' => "first_name",
+        'hubspot' => "firstname",
+      ),
+      array(
+        'google_sheets' => "last_name",
+        'localdb' => "last_name",
+        'woodpecker' => "last_name",
+        'hubspot' => "lastname",
+      ),
+      array(
+        'google_sheets' => "email",
+        'localdb' => "email",
+        'woodpecker' => "email",
+        'hubspot' => "email",
+      ),
+      array(
+        'google_sheets' => "job_title_full",
+        'localdb' => "job_title_full",
+        'woodpecker' => "",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "job_title",
+        'localdb' => "job_title",
+        'woodpecker' => "title",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "city",
+        'localdb' => "city",
+        'woodpecker' => "city",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "country",
+        'localdb' => "country",
+        'woodpecker' => "country",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "linkedin",
+        'localdb' => "linkedin",
+        'woodpecker' => "",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "company",
+        'localdb' => "company",
+        'woodpecker' => "company",
+        'hubspot' => "company",
+      ),
+      array(
+        'google_sheets' => "company_website",
+        'localdb' => "company_website",
+        'woodpecker' => "website",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "company_industry",
+        'localdb' => "company_industry",
+        'woodpecker' => "industry",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "company_founded",
+        'localdb' => "company_founded",
+        'woodpecker' => "",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "company_size",
+        'localdb' => "company_size",
+        'woodpecker' => "",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "company_linkedin",
+        'localdb' => "company_linkedin",
+        'woodpecker' => "",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "company_headquarters",
+        'localdb' => "company_headquarters",
+        'woodpecker' => "",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "email_reliability_status",
+        'localdb' => "email_reliability_status",
+        'woodpecker' => "",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "receiving_email_server",
+        'localdb' => "receiving_email_server",
+        'woodpecker' => "",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "kind",
+        'localdb' => "kind",
+        'woodpecker' => "",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "tag",
+        'localdb' => "tag",
+        'woodpecker' => "tags",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "month",
+        'localdb' => "month",
+        'woodpecker' => "",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "",
+        'localdb' => "phone_number",
+        'woodpecker' => "phone",
+        'hubspot' => "",
+      ),
+      array(
+        'google_sheets' => "",
+        'localdb' => "woodpecker_status",
+        'woodpecker' => "status",
+        'hubspot' => "",
+      ),
+    );
+    return $result;
 
 
   }
