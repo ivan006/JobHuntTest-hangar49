@@ -14,15 +14,15 @@ class customer_c extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
-      if (isset($_GET["report"])) {
-        $report = json_decode($_GET["report"],true);
-
+      if (null !== session('_old_input')) {
+        $report = session('_old_input');
       } else {
         $report = array();
       }
+
       $customer_object = new customer;
       $hubspot_data = $customer_object->read_hubspot();
       $woodpecker_data = $customer_object->read_woodpecker();
@@ -126,9 +126,11 @@ class customer_c extends Controller
     {
       $customer_object = new customer;
       $result = $customer_object->write_hubspot_to_localDb();
-      $result = urlencode(json_encode($result));
+      // $result = urlencode(json_encode($result));
 
-      return redirect('/?report='.$result);
+      // return redirect('/?report='.$result);
+
+      return redirect('/')->withInput($result);
 
 
     }

@@ -84,7 +84,7 @@
               - sync data from Hubspot to localDb		(processing)
               - and give diff report				(done)
             Button 4 must
-              - sync data from localDB to Woodpecker		(processing)
+              - sync data from localDB to Woodpecker		(done)
             Update button must
               - update Woodpecker and localDB			(done)
 

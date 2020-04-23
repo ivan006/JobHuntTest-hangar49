@@ -99,3 +99,7 @@ https://stackoverflow.com/questions/51028944/laravel-5-6-get-changed-values-afte
 https://stackoverflow.com/questions/45702409/laravel-check-if-updateorcreate-performed-update
 https://stackoverflow.com/questions/51028944/laravel-5-6-get-changed-values-after-updateorcreate
 https://atom.io/packages/php-cs-fixer
+google: how to pass a php object to js with failsafe
+https://stackoverflow.com/questions/32690083/is-there-any-way-to-pass-php-object-as-javascript-parameter-in-html
+https://laracasts.com/discuss/channels/laravel/redirect-and-send-data-to-a-controller-post-method
+https://laracasts.com/discuss/channels/laravel/how-to-use-session-in-laravel?page=1

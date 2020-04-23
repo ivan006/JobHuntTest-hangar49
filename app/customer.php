@@ -62,24 +62,27 @@ class customer extends Model
     $input = self::all();
     $input = json_decode(json_encode($input), true);
 
-    $cols = array(
-      array(
-        'local_name' => "first_name",
-        'remote_name' => "firstname",
-      ),
-      array(
-        'local_name' => "company",
-        'remote_name' => "company",
-      ),
-      array(
-        'local_name' => "last_name",
-        'remote_name' => "lastname",
-      ),
-      array(
-        'local_name' => "id",
-        'remote_name' => "localdb_id",
-      ),
-    );
+    // $cols = array(
+    //   array(
+    //     'local_name' => "first_name",
+    //     'remote_name' => "firstname",
+    //   ),
+    //   array(
+    //     'local_name' => "company",
+    //     'remote_name' => "company",
+    //   ),
+    //   array(
+    //     'local_name' => "last_name",
+    //     'remote_name' => "lastname",
+    //   ),
+    //   array(
+    //     'local_name' => "id",
+    //     'remote_name' => "localdb_id",
+    //   ),
+    // );
+    $customer_object = new customer;
+    $cross_db_mapping = $customer_object->cross_db_mapping();
+
     $result = array();
     foreach ($input as $key => $value) {
       $result[$key] = array();
@@ -88,15 +91,17 @@ class customer extends Model
       $result[$key]["properties"] = array();
       $i = 0;
 
-      foreach ($cols as $key2 => $value2) {
-        $result[$key]["properties"][$i]["property"] = $value2["remote_name"];
+      foreach ($cross_db_mapping as $key2 => $value2) {
+        if ($value2["hubspot"] !== "") {
+          $result[$key]["properties"][$i]["property"] = $value2["hubspot"];
 
-        if (isset($value[$value2["local_name"]])) {
-          $result[$key]["properties"][$i]["value"] = $value[$value2["local_name"]];
-        } else {
-          $result[$key]["properties"][$i]["value"] = "";
+          if (isset($value[$value2["localdb"]])) {
+            $result[$key]["properties"][$i]["value"] = $value[$value2["localdb"]];
+          } else {
+            $result[$key]["properties"][$i]["value"] = "";
+          }
+          $i=$i+1;
         }
-        $i=$i+1;
       }
 
     }
@@ -109,26 +114,33 @@ class customer extends Model
   {
     $customer_object = new customer;
     $apikey = $customer_object->apikey()["hubspot"];
-    $cols = array(
-      "localdb_id",
-      "firstname",
-      "lastmodifieddate",
-      "company",
-      "email",
-      "lastname",
-    );
+    $customer_object = new customer;
+    $cross_db_mapping = $customer_object->cross_db_mapping();
+    // $cols = array(
+    //   // "localdb_id",
+    //   "firstname",
+    //   "lastmodifieddate",
+    //   "company",
+    //   "email",
+    //   "lastname",
+    // );
     $get_req_properties = "";
-    foreach ($cols as $key => $value) {
-      $get_req_properties = $get_req_properties."&property=".$value;
+    foreach ($cross_db_mapping as $key => $value) {
+      if ($value["hubspot"] !== "") {
+        $get_req_properties = $get_req_properties."&property=".$value["hubspot"];
+      }
     }
+    // =demo
     $hubspot_data_raw =     file_get_contents(
       "https://api.hubapi.com/contacts/v1/lists/all/contacts/all?hapikey="
       .$apikey
       // ."&count=2"
       .$get_req_properties
     );
+
     $hubspot_data_raw = json_decode($hubspot_data_raw, true);
     $hubspot_data_raw = $hubspot_data_raw["contacts"];
+    // dd($hubspot_data_raw);
 
 
 
@@ -138,11 +150,13 @@ class customer extends Model
     foreach ($hubspot_data_raw as $key => $value) {
       $hubspot_data[$key] = array();
       // $hubspot_data[$key]["id"] = $value["vid"];
-      foreach ($cols as $key2 => $value2) {
-        if (isset($value["properties"][$value2]['value'])) {
-          $hubspot_data[$key][$value2] = $value["properties"][$value2]['value'];
-        } else {
-          $hubspot_data[$key][$value2] = "";
+      foreach ($cross_db_mapping as $key2 => $value2) {
+        if ($value2["hubspot"] !== "") {
+          if (isset($value["properties"][$value2["hubspot"]]['value'])) {
+            $hubspot_data[$key][$value2["hubspot"]] = $value["properties"][$value2["hubspot"]]['value'];
+          } else {
+            $hubspot_data[$key][$value2["hubspot"]] = "";
+          }
         }
       }
     }
@@ -160,42 +174,45 @@ class customer extends Model
     $customers_local = json_decode(json_encode($customers_local), true);
 
 
-    $cols = array(
-      array(
-        'local_name' => "first_name",
-        'remote_name' => "firstname",
-      ),
-      array(
-        'local_name' => "company",
-        'remote_name' => "company",
-      ),
-      array(
-        'local_name' => "email",
-        'remote_name' => "email",
-      ),
-      array(
-        'local_name' => "last_name",
-        'remote_name' => "lastname",
-      ),
-    );
+    // $cols = array(
+    //   array(
+    //     'local_name' => "first_name",
+    //     'remote_name' => "firstname",
+    //   ),
+    //   array(
+    //     'local_name' => "company",
+    //     'remote_name' => "company",
+    //   ),
+    //   array(
+    //     'local_name' => "email",
+    //     'remote_name' => "email",
+    //   ),
+    //   array(
+    //     'local_name' => "last_name",
+    //     'remote_name' => "lastname",
+    //   ),
+    // );
+    $cross_db_mapping = $customer_object->cross_db_mapping();
     $changes = array();
-    $customer_object = new customer;
     foreach ($customers as $key => $customer) {
       $key_value_pairs = array();
       if (isset($customer["email"])) {
-        foreach ($cols as $key2 => $value) {
+        foreach ($cross_db_mapping as $key2 => $value) {
+          if ($value["hubspot"] !== "") {
+            $key_value_pairs[$value["localdb"]] = $customer[$value["hubspot"]];
+          }
 
-          $key_value_pairs[$value["local_name"]] = $customer[$value["remote_name"]];
         }
         $customer_change = $customer_object->updateOrCreate(
-          ['id' => $customer["localdb_id"]],
+          // ['id' => $customer["localdb_id"]],
+          ['email' => $customer["email"]],
           $key_value_pairs
         );
         if ($customer_change->wasChanged()) {
-          $changes[$key]["name"] = $customer_change->first_name;
+          $changes[$key]["name"] = $customer_change->first_name." (update)";
           $changes[$key]["changes"] = $customer_change->getChanges();
         } elseif ($customer_change->wasRecentlyCreated) {
-          $changes[$key]["name"] = $customer_change->first_name;
+          $changes[$key]["name"] = $customer_change->first_name." (create)";
           $changes[$key]["changes"] = $customer_change->attributes;
         }
         // $changes_object[$key] = $customer_change;
@@ -304,26 +321,25 @@ class customer extends Model
 
   public function reformat_localDb_to_woodpecker()
   {
-
-
     $input = self::all();
     $input = json_decode(json_encode($input), true);
 
-
-    $cols = array(
-      array(
-        'local_name' => "first_name",
-        'remote_name' => "first_name",
-      ),
-      array(
-        'local_name' => "company",
-        'remote_name' => "company",
-      ),
-      array(
-        'local_name' => "last_name",
-        'remote_name' => "last_name",
-      ),
-    );
+    $customer_object = new customer;
+    $cross_db_mapping = $customer_object->cross_db_mapping();
+    // $cols = array(
+    //   array(
+    //     'local_name' => "first_name",
+    //     'remote_name' => "first_name",
+    //   ),
+    //   array(
+    //     'local_name' => "company",
+    //     'remote_name' => "company",
+    //   ),
+    //   array(
+    //     'local_name' => "last_name",
+    //     'remote_name' => "last_name",
+    //   ),
+    // );
 
 
     $prospects = array();
@@ -333,14 +349,15 @@ class customer extends Model
 
       $i = 0;
 
-      foreach ($cols as $key2 => $value2) {
-
-        if (isset($value[$value2["local_name"]])) {
-          $prospects[$key][$value2["remote_name"]] = $value[$value2["local_name"]];
-        } else {
-          $prospects[$key][$value2["remote_name"]] = "";
+      foreach ($cross_db_mapping as $key2 => $value2) {
+        if ($value2["woodpecker"] !== "") {
+          if (isset($value[$value2["localdb"]])) {
+            $prospects[$key][$value2["woodpecker"]] = $value[$value2["localdb"]];
+          } else {
+            $prospects[$key][$value2["woodpecker"]] = "";
+          }
+          $i=$i+1;
         }
-        $i=$i+1;
       }
 
     }
@@ -415,156 +432,156 @@ class customer extends Model
 
 
     $result = array(
-      array(
-        'google_sheets' => "",
-        'localdb' => "id",
-        'woodpecker' => "id",
-        'hubspot' => "localdb_id",
-      ),
-      array(
-        'google_sheets' => "",
-        'localdb' => "created_at",
-        'woodpecker' => "",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "",
-        'localdb' => "updated_at",
-        'woodpecker' => "",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "first_name",
-        'localdb' => "first_name",
-        'woodpecker' => "first_name",
-        'hubspot' => "firstname",
-      ),
-      array(
-        'google_sheets' => "last_name",
-        'localdb' => "last_name",
-        'woodpecker' => "last_name",
-        'hubspot' => "lastname",
-      ),
-      array(
-        'google_sheets' => "email",
-        'localdb' => "email",
-        'woodpecker' => "email",
-        'hubspot' => "email",
-      ),
-      array(
-        'google_sheets' => "job_title_full",
-        'localdb' => "job_title_full",
-        'woodpecker' => "",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "job_title",
-        'localdb' => "job_title",
-        'woodpecker' => "title",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "city",
-        'localdb' => "city",
-        'woodpecker' => "city",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "country",
-        'localdb' => "country",
-        'woodpecker' => "country",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "linkedin",
-        'localdb' => "linkedin",
-        'woodpecker' => "",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "company",
-        'localdb' => "company",
-        'woodpecker' => "company",
-        'hubspot' => "company",
-      ),
-      array(
-        'google_sheets' => "company_website",
-        'localdb' => "company_website",
-        'woodpecker' => "website",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "company_industry",
-        'localdb' => "company_industry",
-        'woodpecker' => "industry",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "company_founded",
-        'localdb' => "company_founded",
-        'woodpecker' => "",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "company_size",
-        'localdb' => "company_size",
-        'woodpecker' => "",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "company_linkedin",
-        'localdb' => "company_linkedin",
-        'woodpecker' => "",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "company_headquarters",
-        'localdb' => "company_headquarters",
-        'woodpecker' => "",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "email_reliability_status",
-        'localdb' => "email_reliability_status",
-        'woodpecker' => "",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "receiving_email_server",
-        'localdb' => "receiving_email_server",
-        'woodpecker' => "",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "kind",
-        'localdb' => "kind",
-        'woodpecker' => "",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "tag",
-        'localdb' => "tag",
-        'woodpecker' => "tags",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "month",
-        'localdb' => "month",
-        'woodpecker' => "",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "",
-        'localdb' => "phone_number",
-        'woodpecker' => "phone",
-        'hubspot' => "",
-      ),
-      array(
-        'google_sheets' => "",
-        'localdb' => "woodpecker_status",
-        'woodpecker' => "status",
-        'hubspot' => "",
-      ),
+      // array(
+      //   'google_sheets' => "",
+      //   'localdb' => "id",
+      //   'woodpecker' => "id",
+      //   'hubspot' => "localdb_id",
+      // ),
+        array(
+          'google_sheets' => "",
+          'localdb' => "created_at",
+          'woodpecker' => "",
+          'hubspot' => "",
+        ),
+        array(
+          'google_sheets' => "",
+          'localdb' => "updated_at",
+          'woodpecker' => "",
+          'hubspot' => "",
+        ),
+        array(
+          'google_sheets' => "first_name",
+          'localdb' => "first_name",
+          'woodpecker' => "first_name",
+          'hubspot' => "firstname",
+        ),
+        array(
+          'google_sheets' => "last_name",
+          'localdb' => "last_name",
+          'woodpecker' => "last_name",
+          'hubspot' => "lastname",
+        ),
+        array(
+          'google_sheets' => "email",
+          'localdb' => "email",
+          'woodpecker' => "email",
+          'hubspot' => "email",
+        ),
+        array(
+          'google_sheets' => "job_title_full",
+          'localdb' => "job_title_full",
+          'woodpecker' => "",
+          'hubspot' => "",
+        ),
+        array(
+          'google_sheets' => "job_title",
+          'localdb' => "job_title",
+          'woodpecker' => "title",
+          'hubspot' => "jobtitle",
+        ),
+        array(
+          'google_sheets' => "city",
+          'localdb' => "city",
+          'woodpecker' => "city",
+          'hubspot' => "city",
+        ),
+        array(
+          'google_sheets' => "country",
+          'localdb' => "country",
+          'woodpecker' => "country",
+          'hubspot' => "country",
+        ),
+        array(
+          'google_sheets' => "linkedin",
+          'localdb' => "linkedin",
+          'woodpecker' => "",
+          'hubspot' => "linkedin",
+        ),
+        array(
+          'google_sheets' => "company",
+          'localdb' => "company",
+          'woodpecker' => "company",
+          'hubspot' => "company",
+        ),
+        array(
+          'google_sheets' => "company_website",
+          'localdb' => "company_website",
+          'woodpecker' => "website",
+          'hubspot' => "website",
+        ),
+        array(
+          'google_sheets' => "company_industry",
+          'localdb' => "company_industry",
+          'woodpecker' => "industry",
+          'hubspot' => "industry",
+        ),
+        array(
+          'google_sheets' => "company_founded",
+          'localdb' => "company_founded",
+          'woodpecker' => "",
+          'hubspot' => "company_founded",
+        ),
+        array(
+          'google_sheets' => "company_size",
+          'localdb' => "company_size",
+          'woodpecker' => "",
+          'hubspot' => "company_size",
+        ),
+        array(
+          'google_sheets' => "company_linkedin",
+          'localdb' => "company_linkedin",
+          'woodpecker' => "",
+          'hubspot' => "linkedin_company",
+        ),
+        array(
+          'google_sheets' => "company_headquarters",
+          'localdb' => "company_headquarters",
+          'woodpecker' => "",
+          'hubspot' => "company_headquarters",
+        ),
+        array(
+          'google_sheets' => "email_reliability_status",
+          'localdb' => "email_reliability_status",
+          'woodpecker' => "",
+          'hubspot' => "email_reliability_status",
+        ),
+        array(
+          'google_sheets' => "receiving_email_server",
+          'localdb' => "receiving_email_server",
+          'woodpecker' => "",
+          'hubspot' => "receiving_email_server",
+        ),
+        array(
+          'google_sheets' => "kind",
+          'localdb' => "kind",
+          'woodpecker' => "",
+          'hubspot' => "kind",
+        ),
+        array(
+          'google_sheets' => "tag",
+          'localdb' => "tag",
+          'woodpecker' => "tags",
+          'hubspot' => "",
+        ),
+        array(
+          'google_sheets' => "month",
+          'localdb' => "month",
+          'woodpecker' => "",
+          'hubspot' => "month",
+        ),
+        array(
+          'google_sheets' => "",
+          'localdb' => "phone_number",
+          'woodpecker' => "phone",
+          'hubspot' => "phone",
+        ),
+        array(
+          'google_sheets' => "",
+          'localdb' => "woodpecker_status",
+          'woodpecker' => "status",
+          'hubspot' => "",
+        ),
     );
     return $result;
 
