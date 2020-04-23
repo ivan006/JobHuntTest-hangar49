@@ -183,8 +183,9 @@ class customer_c extends Controller
           )
         )
       );
-      $body = json_encode($body);
+      $body = json_encode($body,JSON_PRETTY_PRINT);
       customer::curl_post($body,$endpoint,$userpwd);
+      echo $body;
       // exit;
       return redirect('/');
 
