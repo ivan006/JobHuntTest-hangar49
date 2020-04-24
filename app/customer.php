@@ -392,6 +392,8 @@ class customer extends Model
       echo 'Error:' . curl_error($ch);
     }
     curl_close($ch);
+    echo "<pre>";
+    $result = json_encode(json_decode($result, true),JSON_PRETTY_PRINT);
     echo $result;
 
 
@@ -587,6 +589,81 @@ class customer extends Model
 
 
   }
+
+  public function hubspot_migration()
+  {
+
+    $properties = array(
+      array(
+        "value" => "company_founded",
+      ),
+      array(
+        "value" => "company_headquarters",
+      ),
+      array(
+        "value" => "month",
+      ),
+      array(
+        "value" => "kind",
+      ),
+      array(
+        "value" => "email_reliability_status",
+      ),
+      array(
+        "value" => "linkedin",
+      ),
+      array(
+        "value" => "linkedin_company",
+      ),
+      array(
+        "value" => "receiving_email_server",
+      ),
+    );
+
+
+
+
+
+    foreach ($properties as $key => $value) {
+      $bodies[$key] = array(
+        "name" => $value["value"],
+        "label" => $value["value"],
+        "description" => "",
+        "groupName" => "contactinformation",
+        "type" => "string",
+        "fieldType" => "text",
+        "formField" => true,
+        "displayOrder" => "",
+        "options" => array(),
+      );
+    }
+
+
+
+
+    $customer_object = new customer;
+    // $body = $customer_object->reformat_localDb_to_hubspot();
+    // $body = json_encode($body);
+    $apikey = $customer_object->apikey()["hubspot"];
+    $endpoint = 'https://api.hubapi.com/properties/v1/contacts/properties?hapikey=' . $apikey;
+    $userpwd = "";
+
+    // echo "<pre>";
+    // echo $body;
+    //
+    foreach ($bodies as $key => $body) {
+      $body = json_encode($body, JSON_PRETTY_PRINT);
+
+      $customer_object->curl_post($body,$endpoint,$userpwd);
+      // exit;
+    }
+
+
+
+
+
+  }
+
 
 
 

@@ -23,3 +23,4 @@ Route::get('/SyncLocalDBToHubspot', 'customer_c@SyncLocalDBToHubspot');
 Route::get('/SyncHubspotToLocalDB', 'customer_c@SyncHubspotToLocalDB');
 Route::get('/SyncLocalDBToWoodpecker', 'customer_c@SyncLocalDBToWoodpecker');
 Route::post('/update', 'customer_c@update');
+Route::get('/hubspot_migration', 'customer_c@hubspot_migration');

@@ -197,5 +197,22 @@ class customer_c extends Controller
 
     }
 
+    /**
+    * Update the specified resource in storage.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function hubspot_migration()
+    {
+
+      $customer_object = new customer;
+
+      $customer_object->hubspot_migration();
+      // echo $body;
+      // exit;
+      return redirect('/');
+
+    }
+
 
 }
